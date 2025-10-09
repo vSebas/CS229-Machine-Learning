@@ -11,11 +11,21 @@ def main(train_path, valid_path, save_path):
         save_path: Path to save predicted probabilities using np.savetxt().
     """
     x_train, y_train = util.load_dataset(train_path, add_intercept=True)
+    x_valid, y_valid = util.load_dataset(valid_path, add_intercept=True)
 
     # *** START CODE HERE ***
     # Train a logistic regression classifier
     # Plot decision boundary on top of validation set set
     # Use np.savetxt to save predictions on eval set to save_path as a 1D numpy array
+
+    clf = LogisticRegression()
+    clf.fit(x_train, y_train)
+    y_pred = clf.predict(x_valid)
+
+    np.savetxt(save_path, y_pred)
+
+    util.plot(x_valid, y_valid, clf.theta, save_path.replace('.txt', '.png'))
+    
     # *** END CODE HERE ***
 
 
@@ -51,6 +61,34 @@ class LogisticRegression:
             y: Training example labels. Shape (n_examples,).
         """
         # *** START CODE HERE ***
+        g = lambda z: 1 / (1 + np.exp(-z))
+
+        n_examples, dim = x.shape
+        
+        if self.theta is None:
+            self.theta = np.zeros(dim)  # dim is the number of features (x1, x2, x3, ... , xd)
+            self.prev_theta = np.zeros(dim)
+
+        for i in range(self.max_iter):
+            self.prev_theta = self.theta.copy()
+
+            eta = x @ self.theta
+            gradient = x.T @ (g(eta) - y)       # dim x 1
+            M = np.diag(g(eta) * (1 - g(eta)))  # diagonal matrix with g(eta) * (1 - g(eta)) on the diagonal, dim x dim
+            H = x.T @ (M @ x)
+            self.theta -= np.linalg.solve(H, gradient)
+            loss = -(y * np.log(g(eta) + self.eps) + (1 - y) * np.log(1 - g(eta) + self.eps)).sum()/n_examples
+            
+            # if self.verbose and i % 1 == 0:
+            #     print(f'Iteration {i}, loss: {loss}')
+
+            if(np.linalg.norm(self.theta - self.prev_theta) < self.eps):
+                print(f'Converged at iteration {i}, loss: {loss}')
+                break
+
+            if self.verbose and i == self.max_iter - 1:
+                print(f'Max iterations reached, loss: {loss}')
+
         # *** END CODE HERE ***
 
     def predict(self, x):
@@ -63,6 +101,9 @@ class LogisticRegression:
             Outputs of shape (n_examples,).
         """
         # *** START CODE HERE ***
+        g = lambda z: 1 / (1 + np.exp(-z))
+
+        return g(x @ self.theta)
         # *** END CODE HERE ***
 
 if __name__ == '__main__':

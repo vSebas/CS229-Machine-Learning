@@ -21,19 +21,21 @@ def main(lr, train_path, eval_path, save_path):
     # Fit a Poisson Regression model
     # Run on the validation set, and use np.savetxt to save outputs to save_path as a 1D numpy array
 
-    clf = PoissonRegression(step_size=lr, verbose=True)
+    clf = PoissonRegression(lr)
     clf.fit(x_train, y_train)
     y_pred = clf.predict(x_eval)
+
+    np.savetxt(save_path, y_pred)
 
     plt.scatter(y_eval, y_pred)
     plt.xlabel('y_eval')
     plt.ylabel('y_pred')
     plt.title('Poisson Regression: True vs Predicted')
     plt.legend()
-    plt.show()
-    
-    np.savetxt(save_path, y_pred, fmt="%.6f")
+    # plt.show()
 
+    plt.savefig(save_path.replace('.txt', '.png'))
+    
     # *** END CODE HERE ***
 
 
@@ -79,7 +81,7 @@ class PoissonRegression:
         n_examples, dim = x.shape
         
         if self.theta is None:
-            self.theta = np.zeros(dim)  # dim is the number of features
+            self.theta = np.zeros(dim)  # dim is the number of features (x1, x2, x3, ... , xd)
             self.prev_theta = np.zeros(dim)
 
         for i in range(self.max_iter):
