@@ -21,15 +21,13 @@ def main(lr, train_path, eval_path, save_path):
     # Fit a Poisson Regression model
     # Run on the validation set, and use np.savetxt to save outputs to save_path as a 1D numpy array
 
-    # Plot the training data and the fitted Poisson regression curve
     clf = PoissonRegression(step_size=lr, verbose=True)
     clf.fit(x_train, y_train)
     y_pred = clf.predict(x_eval)
 
-    # plt.scatter([:, 1], y_train, label='Training data')
     plt.scatter(y_eval, y_pred)
-    plt.xlabel('x')
-    plt.ylabel('y')
+    plt.xlabel('y_eval')
+    plt.ylabel('y_pred')
     plt.title('Poisson Regression: True vs Predicted')
     plt.legend()
     plt.show()
@@ -84,28 +82,24 @@ class PoissonRegression:
             self.theta = np.zeros(dim)  # dim is the number of features
             self.prev_theta = np.zeros(dim)
 
-        # Compute the gradient of the log-likelihood for Poisson regression 
-        # with batch gradient ascent
-        theta = 0
-
         for i in range(self.max_iter):
-            gradient = np.zeros(dim) # same dimension as theta
             e = np.exp(x @ self.theta) # n_examples x 1
             error = y - e
             gradient = x.T @ error # dim x n_examples
 
             self.prev_theta = self.theta.copy() # copy because self.theta will be updated
             self.theta += self.step_size * gradient
+            ll = (y * (x @ self.theta) - e).sum()
 
-            if self.verbose and i % 1000 == 0:
-                print(f'Iteration {i}')
+            if self.verbose and i % 10 == 0:
+                print(f'Iteration {i}, Log-Likelihood: {ll}')
 
             if(np.linalg.norm(self.theta - self.prev_theta) < self.eps):
-                print(f'Converged at iteration {i}')
+                print(f'Converged at iteration {i}, Log-Likelihood: {ll}')
                 break
 
             if self.verbose and i == self.max_iter - 1:
-                print(f'Max iterations reached')
+                print(f'Max iterations reached, Log-Likelihood: {ll}')
 
         # *** END CODE HERE ***
 
@@ -120,7 +114,7 @@ class PoissonRegression:
         """
         # *** START CODE HERE ***
 
-        # Return the prediction according to the Poisson regression model
+        # Prediction according to the Poisson regression model
         return np.exp(x @ self.theta)
 
         # *** END CODE HERE ***
