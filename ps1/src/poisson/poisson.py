@@ -15,6 +15,7 @@ def main(lr, train_path, eval_path, save_path):
     """
     # Load training set
     x_train, y_train = util.load_dataset(train_path, add_intercept=True)
+    x_eval, y_eval = util.load_dataset(eval_path, add_intercept=True)
 
     # *** START CODE HERE ***
     # Fit a Poisson Regression model
@@ -23,16 +24,17 @@ def main(lr, train_path, eval_path, save_path):
     # Plot the training data and the fitted Poisson regression curve
     clf = PoissonRegression(step_size=lr, verbose=True)
     clf.fit(x_train, y_train)
-    y_pred = clf.predict(x_train)
+    y_pred = clf.predict(x_eval)
 
-    plt.scatter(x_train[:, 1], y_train, label='Training data')
-    plt.scatter(x_train[:, 1], y_pred, color='red', label='Poisson regression fit')
+    # plt.scatter([:, 1], y_train, label='Training data')
+    plt.scatter(y_eval, y_pred)
     plt.xlabel('x')
     plt.ylabel('y')
-    plt.title('Poisson Regression Fit')
+    plt.title('Poisson Regression: True vs Predicted')
     plt.legend()
     plt.show()
-    np.savetxt(save_path, y_pred)
+    
+    np.savetxt(save_path, y_pred, fmt="%.6f")
 
     # *** END CODE HERE ***
 
@@ -62,6 +64,8 @@ class PoissonRegression:
         self.eps = eps
         self.verbose = verbose
 
+        self.prev_theta = None
+
     def fit(self, x, y):
         """Run gradient ascent to maximize likelihood for Poisson regression.
         Update the parameter by step_size * (sum of the gradient over examples)
@@ -75,38 +79,34 @@ class PoissonRegression:
         # Implement gradient ascent loop with convergence check
 
         n_examples, dim = x.shape
+        
         if self.theta is None:
+            self.theta = np.zeros(dim)  # dim is the number of features
+            self.prev_theta = np.zeros(dim)
 
+        # Compute the gradient of the log-likelihood for Poisson regression 
+        # with batch gradient ascent
+        theta = 0
 
-
-
-        n_examples, dim = x.shape
-        if self.theta is None:
-            self.theta = np.zeros(dim)
-        prev_ll = float('-inf')
         for i in range(self.max_iter):
-            # Compute the linear combination of inputs and parameters
-            linear_combination = x.dot(self.theta)
-            # Compute the predicted mean (lambda) using the exponential function
-            lambda_pred = np.exp(linear_combination)
-            # Compute the gradient of the log-likelihood
-            gradient = x.T.dot(y - lambda_pred) / n_examples
-            # Update the parameters using the gradient and step size
+            gradient = np.zeros(dim) # same dimension as theta
+            e = np.exp(x @ self.theta) # n_examples x 1
+            error = y - e
+            gradient = x.T @ error # dim x n_examples
+
+            self.prev_theta = self.theta.copy() # copy because self.theta will be updated
             self.theta += self.step_size * gradient
-            # Compute the log-likelihood for convergence check
-            ll = np.sum(y * linear_combination - lambda_pred) / n_examples
+
             if self.verbose and i % 1000 == 0:
-                print(f'Iteration {i}, Log-Likelihood: {ll}')
-            # Check for convergence
-            if abs(ll - prev_ll) < self.eps:
-                if self.verbose:
-                    print(f'Converged at iteration {i}, Log-Likelihood: {ll}')
+                print(f'Iteration {i}')
+
+            if(np.linalg.norm(self.theta - self.prev_theta) < self.eps):
+                print(f'Converged at iteration {i}')
                 break
-            prev_ll = ll
-        if self.verbose and i == self.max_iter - 1:
-            print(f'Max iterations reached. Final Log-Likelihood: {ll}')
-        return self
-    
+
+            if self.verbose and i == self.max_iter - 1:
+                print(f'Max iterations reached')
+
         # *** END CODE HERE ***
 
     def predict(self, x):
@@ -119,6 +119,10 @@ class PoissonRegression:
             Floating-point prediction for each input, shape (n_examples,).
         """
         # *** START CODE HERE ***
+
+        # Return the prediction according to the Poisson regression model
+        return np.exp(x @ self.theta)
+
         # *** END CODE HERE ***
 
 if __name__ == '__main__':
