@@ -1,2 +1,50 @@
 \begin{answer}
+
+For a single $(x,y)$, with $\lambda = e^{\theta^\top x}$, the conditional log-likelihood is
+\[
+\ell(\theta) \;=\; \log p(y\mid x;\theta) \;=\; \log(\frac{e^{-\lambda}\lambda^y}{y!}) \;=\; \log(\frac{e^{-e^{\theta^\top x}}(e^{\theta^\top x})^y}{y!})
+\]
+\[
+\ell(\theta) \;=\; y\,\theta^\top x \;-\; e^{\theta^\top x} \;-\; \log(y!).
+\]
+Gradient:
+\[
+\nabla_\theta \ell(\theta) \;=\; \frac{\partial}{\partial \theta}\,\ell(\theta) \;=\; \big(y - e^{\theta^\top x}\big)\,x.
+\]
+
+For all $n$ samples
+\[
+\mathcal{L}(\theta)
+= \sum_{i=1}^n \log p\!\big(y^{(i)}\mid x^{(i)};\theta\big)
+= \sum_{i=1}^n \Big( y^{(i)}\,\theta^\top x^{(i)} - e^{\theta^\top x^{(i)}} - \log(y^{(i)}!) \Big).
+\]
+\[
+\nabla_\theta \mathcal{L}(\theta)
+= \sum_{i=1}^n \big( y^{(i)} - e^{\theta^\top x^{(i)}} \big)\, x^{(i)}.
+\]
+
+\textbf{Stochastic Gradient Ascent update rule:}
+%\[
+%\boxed{\;\theta \;\leftarrow\; \theta \;+\; \alpha\,\big(y - %e^{\theta^\top x}\big)\,x\;}
+%\]
+\[
+\;\theta \;\leftarrow\; \theta \;+\; \alpha\,\big(y - e^{\theta^\top x}\big)\,x\; \quad \text{for a single sample}
+\]
+\[
+\theta \leftarrow \theta \;+\; \alpha\, \nabla_\theta \mathcal{L}(\theta) \quad \text{for n samples}
+\]
+
+%(For batch/mini-batch, sum/average the per-example gradients.)
+
+
+%\noindent\textit{(Matrix form)}
+%Let $X\in\mathbb{R}^{n\times d}$ stack the $x^{(i)}$ row-wise, $y\in\mathbb{R}^n$ stack the $y^{(i)}$, and
+%$\mu = \exp(X\theta)$ applied elementwise. Then
+%\[
+%\nabla_\theta \mathcal{L}(\theta) = X^\top (y - \mu),
+%\qquad
+%\nabla_\theta \bar{\mathcal{L}}(\theta) = \frac{1}{n} X^\top (y - \mu).
+%\]
+
+
 \end{answer}

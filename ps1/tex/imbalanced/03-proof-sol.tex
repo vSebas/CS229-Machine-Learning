@@ -1,2 +1,79 @@
 \begin{answer}
+
+Let
+\[
+\rho = \frac{P}{E}, \qquad \kappa = \frac{\rho}{(1 - \rho)}
+\]
+be the ratio of positive examples to negative examples.
+
+All positives and negatives from original sample satisfy:
+\[
+TP_D + FN_D = P_D. \qquad TN_D + FP_D = N_D
+\]
+
+Then, the number of negative and positive samples are
+\[
+N_{D'} = N_D = (1 - \rho)n, 
+\qquad 
+P_{D'} = \frac{1}{\kappa} P_D = \frac{1 - \rho}{\rho} \rho n = (1 - \rho)n,
+\qquad 
+P_{D'} = N_{D'}.
+\]
+
+Thus, the total number of examples after balancing is
+\[
+T_{D'} = N_{D'} + \frac{1}{\kappa}P_D = (1 - \rho)n + (1 - \rho)n = 2(1 - \rho)n.
+\]
+
+Then,
+\[
+P_{D'} = \frac{1}{\kappa}P_D = \frac{1}{\kappa}(TP_D + FN_D) = TP_{D'} + FN_{D'},
+\]
+and
+\[
+N_{D'} = TN_D + FP_D = TN_{D'} + FP_{D'}.
+\]
+
+The accuracy on the new dataset is
+\[
+A_{D'} = \frac{TP_{D'} + TN_{D'} }
+     { N_{D'} + P_{D'}}
+= \frac{ \frac{1}{\kappa} (TP_D + TN_D) }
+     {2N_D }
+= \frac{ \frac{N_D}{P_D} (TP_D + TN_D) }
+     {2N_D }
+\]
+
+\[
+ = \frac{1}{2}
+\frac{ N_D TP_D + P_D TN_D }
+     {P_D N_D }
+= \frac{1}{2}
+  \left(
+    \frac{TP_{D}}{P_{D}}
+    + 
+    \frac{TN_{D}}{N_{D}}
+  \right).
+\]
+
+Expanding each term:
+\[
+A_{D'} = 
+\frac{1}{2}
+\left(
+  \frac{TP_D}{TP_D + FN_D}
+  + 
+  \frac{TN_D}{TN_D + FP_D}
+\right)
+= \frac{1}{2}(A_0 + A_1).
+\]
+
+Hence, the balanced accuracy is
+\[
+\bar{A}_D = \frac{1}{2}(A_0 + A_1),
+\qquad \text{so that} \qquad
+A_{D'} = \bar{A}_D.
+\]
+
+
 \end{answer}

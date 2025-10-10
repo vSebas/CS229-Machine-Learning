@@ -1,2 +1,66 @@
 \begin{answer}
+
+Let $\eta=\theta^\top x$. For one example $(x,y)$ with $y\in\{0,1\}$,
+the (negative) log-likelihood (logistic loss) is
+\[
+\ell(\theta) \;=\; -\Big( y\log g(\eta) + (1-y)\log(1-g(\eta)) \Big).
+\]
+
+Gradient (w. chain-rule).
+Differentiate w.r.t.\ $\eta$ first and then w.r.t. $\theta$:
+\[
+\frac{\partial \ell}{\partial \eta}
+= -\Big( y\,\frac{1}{g(\eta)}\,\frac{\partial g(\eta)}{\partial \eta}
+       + (1-y)\,\frac{1}{1-g(\eta)}\,\frac{\partial (1-g(\eta))}{\partial \eta} \Big)
+= -\Big( y\,\frac{1}{g(\eta)}\,g(\eta)' \;-\; (1-y)\,\frac{1}{1-g(\eta)}\,g(\eta)' \Big),
+\]
+since $\dfrac{\partial (1-g(\eta))}{\partial \eta} = -g(\eta)'$. Using $g(\eta)'=\dfrac{\partial g(\eta)}{\partial \eta} = g(\eta)(1-g(\eta))$,
+\[
+\frac{\partial \ell}{\partial \eta}
+= -\,y\,\frac{g(\eta)(1-g(\eta))}{g(\eta)} \;+\; (1-y)\,\frac{g(\eta)(1-g(\eta))}{1-g(\eta)}
+= -(y(1-g(\eta))) \;+\; (1-y)g(\eta) 
+= g(\eta) - y.
+\]
+Therefore,
+\[
+\nabla_\theta \ell(\theta)
+= \frac{\partial \ell}{\partial \eta}\,\frac{\partial \eta}{\partial \theta}
+= (g(\eta)-y)\,x.
+\]
+
+Hessian
+\[
+\nabla_\theta^2 \ell(\theta)
+= \nabla_\theta\!\big((g(\eta)-y)\,x\big)
+= \big(\nabla_\theta g(\eta)\big)\,x^\top
+= \Big(\frac{\partial g(\eta)}{\partial \eta}\,\frac{\partial \eta}{\partial \theta}\Big)\,x^\top
+= g'(\eta)\,x\,x^\top
+= g(\eta)(1-g(\eta))\,x\,x^\top.
+\]
+
+Verification
+For any $z\in\mathbb{R}^d$,
+\[
+z^\top \nabla_\theta^2 \ell(\theta)\, z
+= z^\top (g(\eta)(1-g(\eta))\,x\,x^\top) z
+= g(\eta)(1-g(\eta))\, (z^\top x)^2 \;\ge\; 0,
+\]
+because $g(\eta)(1-g(\eta))\ge 0$ and $(z^\top x)^2\ge 0$. Hence $\nabla_\theta^2 \ell(\theta)\succeq 0$.
+
+%\paragraph{Dataset form (for completeness).}
+%For $n$ examples $\{(x^{(i)},y^{(i)})\}_{i=1}^n$,
+%\[
+%J(\theta) \;=\; \frac{1}{n}\sum_{i=1}^n \ell^{(i)}(\theta),
+%\qquad
+%\nabla_\theta^2 J(\theta) \;=\; \frac{1}{n}\sum_{i=1}^n g(\eta)_i(1-g(\eta)_i)\,x^{(i)}{x^{(i)}}^\top,
+%\]
+%with $g(\eta)_i=g(\theta^\top x^{(i)})$. Thus for any $z$,
+%\[
+%z^\top \big(\nabla_\theta^2 J(\theta)\big) z
+%= \frac{1}{n}\sum_{i=1}^n g(\eta)_i(1-g(\eta)_i)\,(z^\top x^{(i)})^2 \;\ge\; 0,
+%\]
+%so $\nabla_\theta^2 J(\theta)\succeq 0$.
+% (Vectorized: with X having rows x^{(i)} and S=diag(h_i(1-h_i)), \; \nabla^2 J = \tfrac{1}{n} X^\top S X \succeq 0.)
+
+
 \end{answer}

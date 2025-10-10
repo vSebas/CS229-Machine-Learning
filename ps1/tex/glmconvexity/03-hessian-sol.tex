@@ -1,2 +1,36 @@
 \begin{answer}
+
+For one example $(x,y)$ with $\eta=\theta^\top x$, the (negative) log-likelihood is
+\[
+\ell(\theta) \;=\; -\log(b(y) \exp(y\eta - a(\eta)))
+    \;=\;   -\log(b(y)) - y\eta + a(\eta)
+\]
+
+Gradient (w. chain rule)
+\[
+\nabla_\theta \ell(\theta)
+= \frac{\partial}{\partial \eta} \ell(\theta) \frac{\partial }{\partial \theta} \eta 
+= \big(a'(\eta)-y\big)\,x .
+\]
+
+Hessian
+\[
+\nabla_\theta^2 \ell(\theta)
+= \nabla_\theta \big((a'(\eta)-y)\,x\big)
+= \frac{\partial}{\partial \eta} a'(\eta)x \frac{\partial }{\partial \theta} \eta 
+\;=\; a''(\eta)\,x\,x^\top
+\]
+
+Positive semidefiniteness
+For any $z\in\mathbb{R}^n$,
+\[
+z^\top \big(\nabla_\theta^2 \ell(\theta)\big) z
+= z^\top \big( a''(\eta)\,x\,x^\top \big) z
+= a''(\eta)\,\big(z^\top x \, x^\top z\big)^2
+= a''(\eta)\,\big(z^\top x\big)^2 \;\ge\; 0,
+\]
+because $a''(\eta)\ge 0$ and $(z^\top x)^2\ge 0$.
+Hence $\boxed{\nabla_\theta^2 \ell(\theta)\succeq 0}$.
+
+
 \end{answer}

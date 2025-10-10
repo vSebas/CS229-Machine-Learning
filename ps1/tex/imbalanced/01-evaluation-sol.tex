@@ -1,3 +1,95 @@
 
 \begin{answer}
+
+\subsection*{(i)}
+Let
+\[
+\rho = \frac{\text{\# positive examples}}{\text{\# total examples}} 
+      = \frac{P}{E},
+\]
+so that
+\[
+\frac{N}{E} = 1 - \rho.
+\]
+
+Then, in the case of predicting all negatives,
+the accuracy on the validation dataset is
+\[
+A = \frac{\text{\# examples predicted correctly by the classifier}}{\text{\# total examples}}
+  = \frac{N}{E}
+  = \frac{(1-\rho)E}{E}
+  = 1 - \rho.
+\]
+Hence, if \(\rho\) is small, the accuracy is high even for a trivial classifier.
+
+\subsection*{(ii)}
+
+From the confusion matrix:
+
+\[
+\begin{array}{c|cc}
+    & \text{Prediction +} & \text{Prediction -} \\ \hline
+    \text{Actual +} & TP & FN \\
+    \text{Actual -} & FP & TN \\
+\end{array}
+\]
+
+Total number of examples:
+\[
+E = TP + TN + FP + FN.
+\]
+
+Total actual positives:
+\[
+P = TP + FN,
+\qquad
+\text{and total actual negatives: } N = TN + FP.
+\]
+
+The fraction of positive examples in the dataset:
+\[
+\rho = \frac{P}{E} = \frac{TP + FN}{TP + TN + FP + FN},
+\]
+
+The overall accuracy is:
+\[
+A = \frac{TP + TN}{TP + TN + FP + FN}.
+\]
+
+Which can be written as a weighted combination of accuracies per class. Let
+\[
+A_0 = \frac{TP}{TP + FN} \quad \text{(accuracy for the positive class)},
+\qquad
+A_1 = \frac{TN}{TN + FP} \quad \text{(accuracy for the negative class)}.
+\]
+
+Then:
+\[
+\begin{aligned}
+A &= \frac{TP + TN}{E} \\
+  &= \frac{TP + FN}{E} \cdot \frac{TP}{TP + FN}
+   + \frac{TN + FP}{E} \cdot \frac{TN}{TN + FP} \\
+  &= \rho\, A_0 + (1 - \rho)\, A_1.
+\end{aligned}
+\]
+
+\subsection*{(iii)}
+
+If the classifier predicts everything as negative, then
+\[
+TP = 0, \qquad FP = 0.
+\]
+
+Hence
+\[
+A_0 = 0, \qquad A_1 = 1.
+\]
+
+The balanced accuracy is then
+\[
+\bar{A} = \frac{1}{2}(A_0 + A_1)
+        = \frac{1}{2}(0 + 1)
+        = 0.5.
+\]
+
 \end{answer}

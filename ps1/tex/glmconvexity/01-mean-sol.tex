@@ -1,2 +1,19 @@
 \begin{answer}
+
+Since $\int p(y;\eta)\,dy=1$, differentiate w.r.t.\ $\eta$:
+\[
+0 \;=\; \frac{\partial}{\partial \eta} \int b(y)\,e^{\eta y - a(\eta)}\,dy
+  \;=\; \int b(y)\,e^{\eta y - a(\eta)}\,(y - a'(\eta))\,dy
+  \;=\; \int p(y;\eta)\,(y - a'(\eta))\,dy
+\]
+
+Notice that $\E[Y;\eta] = \int y \, p(y;\eta)$, so
+
+\[
+0 \;=\; \int p(y;\eta)\,(y - a'(\eta))\,dy
+  \;=\; \E[Y;\eta] - a'(\eta).
+\]
+
+Hence $\boxed{\,\E[Y;\eta]=a'(\eta)\,}$.
+
 \end{answer}

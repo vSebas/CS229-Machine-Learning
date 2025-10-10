@@ -1,2 +1,15 @@
 \begin{answer}
+
+%The Poisson pmf is
+%\[
+%p(y;\lambda) \;=\; \frac{e^{-\lambda}\lambda^{y}}{y!},\quad %y\in\{0,1,2,\dots\},\;\lambda>0.
+%\]
+Noticing $\lambda=e^{\log{\lambda}}$ so that $\lambda^y=e^{y\log{\lambda}}$, the Poisson PMF can be writen as
+\[
+p(y;\lambda) \;=\; \frac{1}{y!}\,\exp\!\Big(y\log\lambda - \lambda\Big).
+\]
+So the distribution takes the exponential family form.
+\[
+p(y;\eta) \;=\; \underbrace{\frac{1}{y!}}_{b(y)} \exp\!\Big(\underbrace{\log\lambda}_{\eta}\underbrace{y}_{T(y)} \;-\; \underbrace{e^{\eta}}_{a(\eta)}\Big).
+\]
 \end{answer}

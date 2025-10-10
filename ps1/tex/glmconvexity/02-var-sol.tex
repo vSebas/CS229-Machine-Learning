@@ -1,2 +1,25 @@
 \begin{answer}
+
+Differentiate $\E[Y;\eta]=a'(\eta)$ w.r.t.\ $\eta$:
+\[
+\frac{d}{d\eta}a'(\eta)
+    \;=\; \frac{d}{d\eta}\E[Y;\eta]
+    \;=\; \int y \frac{d}{d\eta} \, p(y;\eta)
+\]
+\[
+    \;=\; \int y\,(y - a'(\eta))\,p(y;\eta)\,dy
+    \;=\; \int y^2\,p(y;\eta)\,dy - \int \,y\,a'(\eta)\,p(y;\eta)\,dy\,
+\]
+\[
+   a''(\eta) \;=\; \E[Y^2;\eta] \,-\, a'(\eta)\E[Y;\eta]
+\]
+
+But $\E[Y;\eta]=a'(\eta)$, so
+\[
+   a''(\eta) \;=\; \E[Y^2;\eta] \,-\, \E[Y;\eta]^2 = \E[Y - \E[{Y;\eta];\eta}]^2
+\]
+\[
+\boxed{\,\text{Var}(Y;\eta) \;=\; a''(\eta)\,}
+\]
+
 \end{answer}
