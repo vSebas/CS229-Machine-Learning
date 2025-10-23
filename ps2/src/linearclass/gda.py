@@ -12,7 +12,7 @@ def main(train_path, valid_path, save_path):
         save_path: Path to save predicted probabilities using np.savetxt().
     """
     # Load dataset
-    x_train, y_train = util.load_dataset(train_path, add_intercept=False)
+    x_train, y_train = util.load_dataset(train_path, add_intercept=True)
     x_valid, y_valid = util.load_dataset(valid_path, add_intercept=True)
 
     # *** START CODE HERE ***
@@ -20,7 +20,6 @@ def main(train_path, valid_path, save_path):
     # Train a GDA classifier
     # Plot decision boundary on validation set
     # Use np.savetxt to save outputs from validation set to save_path
-
     clf = GDA()
     clf.fit(x_train, y_train)
     y_pred = clf.predict(x_valid)
@@ -65,32 +64,33 @@ class GDA:
             y: Training example labels. Shape (n_examples,).
         """
         # *** START CODE HERE ***
-
+        x = x[:, 1:]
         n_examples, dim = x.shape
         # print(x, y)
-        print(x.shape, y.shape)
+        # print(x.shape, y.shape)
         # print(y == 0)
-        print(x[y == 0]) # select rows where y == 0 by boolean indexing
+        # print(x[y == 0]) # select rows where y == 0 by boolean indexing
 
         if self.theta is None:
             self.theta = np.zeros(dim)  # dim is the number of features (x1, x2, x3, ... , xd)
-            sigma = np.zeros((n_examples, n_examples))
+        
+        sigma = np.zeros((dim, dim))
 
         # Find phi, mu_0, mu_1, and sigma
         phi = np.mean(y)   # proportion of positive examples sum(y) / n_examples
-        mu_0 = np.mean(x[y == 0], axis=0)  # mean of negative examples, axis=0 means compute the mean for each column
+        mu_0 = np.mean(x[y == 0], axis=0)  # mean of negative examples, axis=/rows means compute the mean for each column
         mu_1 = np.mean(x[y == 1], axis=0)  # mean of positive examples
+
         for i in range(n_examples):
             if y[i] == 0:
-                diff = (x[i] - mu_0).reshape(-1, 1) # reshape to column vector, the arguments -1 means infer the size of that dimension
-                                                    # so that the total number of elements remains the same and 1 means 1 column
+                diff = (x[i] - mu_0)
             else:
-                diff = (x[i] - mu_1).reshape(-1, 1)
-            sigma += diff @ diff.T
-        sigma /= n_examples  # covariance matrix
-        
+                diff = (x[i] - mu_1)
+            sigma += np.outer(diff, diff)
+        sigma /= n_examples
+
         # Write theta in terms of the parameters
-        self.theta = sigma.I @ (mu_1 - mu_0) # theta is a vector of shape (dim,)
+        self.theta =  np.linalg.inv(sigma) @ (mu_1 - mu_0) # theta is a vector of shape (dim,)
         # *** END CODE HERE ***
 
     def predict(self, x):
