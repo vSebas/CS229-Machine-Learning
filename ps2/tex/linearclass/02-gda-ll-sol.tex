@@ -1,4 +1,84 @@
 \begin{answer}
-   
+
+$$
+\begin{aligned}
+\ell(\theta)
+&=\sum_{i=1}^n \log p(x^{(i)},y^{(i)};\theta)\\
+&=\sum_{i=1}^n \log p(x^{(i)}\mid y^{(i)};\mu_0,\mu_1,\Sigma)+\sum_{i=1}^n \log p(y^{(i)};\phi)\\
+&=\sum_{i=1}^n\Bigg[-\frac{d}{2}\log(2\pi)-\frac{1}{2}\log|\Sigma|
+-\frac{1}{2}\big(x^{(i)}-\mu_{y^{(i)}}\big)^\top\Sigma^{-1}\big(x^{(i)}-\mu_{y^{(i)}}\big)\Bigg]\\
+&\quad +\sum_{i=1}^n\Big[y^{(i)}\log\phi+\big(1-y^{(i)}\big)\log(1-\phi)\Big]
+\end{aligned}
+$$
+Constants can be ignored when maximizing the log-likelihood, so we have
+$$
+\begin{aligned}
+\ell(\theta)
+&=-\frac{n}{2}\log|\Sigma| - \frac{1}{2}\sum_{i=1}^n\big(x^{(i)}-\mu_{
+y^{(i)}}\big)^\top\Sigma^{-1}\big(x^{(i)}-\mu_{y^{(i)}}\big)\\
+&\quad +\sum_{i=1}^n\Big[y^{(i)}\log\phi+\big(1-y^{(i)}\big)\log(1-\phi)\Big]
+\end{aligned}
+$$
+For $\phi$, we have
+$$
+\begin{aligned}
+\frac{\partial}{\partial \phi}\ell(\theta)
+&=\sum_{i=1}^n\Big[\frac{y^{(i)}}{\phi}-\frac{1-y^{(i)}}{1-\phi}\Big]\\
+&=\frac{1}{\phi(1-\phi)}\Big[\sum_{i=1}^n y^{(i)} - n\phi\Big]
+\end{aligned}
+$$
+Setting this to zero,
+$$
+\boxed{
+\phi = \frac{1}{n}\sum_{i=1}^n y^{(i)}
+}
+$$
+For $\mu_0$, we care for those with $y^{(i)}=0$, so
+$$
+\ell(\mu_0) = -\frac{1}{2}\sum_{i=1}^n \mathbf{1}\{y^{(i)}=0\}
+\big(x^{(i)}-\mu_0\big)^\top\Sigma^{-1}\big(x^{(i)}-\mu_0\big) + \text{const}
+$$
+$$
+\begin{aligned}
+\frac{\partial \ell}{\partial \mu_0}
+&= -\frac{1}{2}\sum_{i=1}^n \mathbf{1}\{y^{(i)}=0\}\cdot 
+\big(-2\Sigma^{-1}(x^{(i)}-\mu_0)\big)\\
+&=\Sigma^{-1}\sum_{i=1}^n \mathbf{1}\{y^{(i)}=0\}\big(x^{(i)}-\mu_0\big)
+\end{aligned}
+$$
+Setting this to zero,
+$$
+\sum_{i=1}^n \mathbf{1}\{y^{(i)}=0\}x^{(i)}=
+\left(\sum_{i=1}^n \mathbf{1}\{y^{(i)}=0\}\right)\mu_0
+\;\therefore\;
+\boxed{\;\displaystyle \mu_0=\frac{\sum_{i=1}^n \mathbf{1}\{y^{(i)}=0\}x^{(i)}}{\sum_{i=1}^n \mathbf{1}\{y^{(i)}=0\}}\; }
+$$
+Similarly, for $\mu_1$, we have
+$$
+\boxed{\;\displaystyle \mu_1=\frac{\sum_{i=1}^n \mathbf{1}\{y^{(i)}=1\}x^{(i)}}{\sum_{i=1}^n \mathbf{1}\{y^{(i)}=1\}}\; }.
+$$
+For $\Sigma$, we have
+$$
+\ell(\Sigma)=-\frac{n}{2}\log|\Sigma|-\frac{1}{2}\sum_{i=1}^n
+\big(x^{(i)}-\mu_{y^{(i)}}\big)^\top\Sigma^{-1}\big(x^{(i)}-\mu_{y^{(i)}}\big)+\text{const}
+$$
+The quadratic term can be rewritten as a trace, so
+$$
+\ell(\Sigma)=-\frac{n}{2}\log|\Sigma|-\frac{1}{2}\sum_{i=1}^n
+\text{tr}(\Sigma^{-1}\big(x^{(i)}-\mu_{y^{(i)}}\big)\big(x^{(i)}-\mu_{y^{(i)}}\big)^\top)
+$$
+$$
+\frac{\partial \ell}{\partial \Sigma}
+=-\frac{n}{2}\Sigma^{-1}+\frac{1}{2}\sum_{i=1}^n\Sigma^{-1}\big(x^{(i)}-\mu_{y^{(i)}}\big)\big(x^{(i)}-\mu_{y^{(i)}}\big)^\top\Sigma^{-1}.
+$$
+
+
+
+Setting this to zero,
+$$
+\boxed{
+\Sigma = \frac{1}{n}\sum_{i=1}^n \big(x^{(i)}-\mu_{y^{(i)}}\big)\big(x^{(i)}-\mu_{y^{(i)}}\big)^\top
+}
+$$
 
 \end{answer}
