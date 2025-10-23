@@ -1,3 +1,26 @@
 \begin{answer}
 
+Let $J_{\lambda}$ be the regularized loss:
+$$
+J_{\lambda}(\theta) = J(\theta) + \lambda R(\theta)
+$$
+with $\lambda \geq 0$ as a regularization parameter, and $R(\theta)$ as the regularizer. For linear regression and $\ell_{2}$ norm
+$$
+J_\lambda(\theta)
+= \frac{1}{2}\,\|X\theta - y\|_2^2
++ \frac{\lambda}{2}\,\|\theta\|_2^2
+$$
+\textbf{Gradients}
+$$\nabla_\theta \left(\tfrac{1}{2}\|X\theta - y\|_2^2\right) = X^\top(X\theta - y)$$
+$$\nabla_\theta \left(\tfrac{\lambda}{2}\|\theta\|_2^2\right) = \lambda\,\theta$$
+$$
+\nabla_\theta J_{\lambda}(\theta) = X^\top(X\theta - y) +  \lambda\,\theta
+$$
+Set $\nabla_\theta J_{\lambda}(\theta)  = 0$
+$$
+0= X^\top(X\theta - y) +  \lambda\,\theta \qquad \therefore \qquad X^{T}y = \lambda \theta + X^{T}X\theta
+$$
+$$
+\boxed{ \theta = (X^{T}X + \lambda I) }
+$$
 \end{answer}

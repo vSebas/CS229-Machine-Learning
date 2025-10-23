@@ -1,4 +1,39 @@
 \begin{answer}
 
+For each parameter $\theta_{i}$
+$$
+p(\theta_{i}) = \frac{1}{2b} \exp\left( -\frac{|\theta_{i}|}{b} \right)
+$$
+As each parameter is marginally independent, the probability density function is 
+$$
+p(\theta) = \prod^{d}_{i}p(\theta_{i}) = \left( \frac{1}{2b}\right )^d \exp\left( -\frac{1}{b}\sum_{i}^d|\theta_{i}| \right)
+$$
+and the L1 norm is $\sum_{i}^d|\theta_{i}| = \|\theta\|_{1}$, so
+$$
+p(\theta) = \left( \frac{1}{2b}\right )^d\exp \left( -\frac{\|\theta\|_{1}}{b} \right)
+$$
+
+Similar to previous exercise, maximizing the product is the same as minimizing the negative log-likelihood
+$$
+\theta_{\text{MAP}}​ = \arg\max_{\theta} p(y \mid X, \theta) p(\theta) = \arg \min_{\theta} \left( -\log(p(y \mid X, \theta) p(\theta)) \right )
+$$
+$$
+= \arg \min_{\theta} \left ( -\log​ p(y \mid X,\theta) - \log p(\theta) \right )
+$$
+$$
+\log p(y \mid X, \theta) = \log \left(\frac{1}{(2\pi\sigma^2)^{n/2}} \exp\left( -\frac{\|(y-X \theta)\|_2^2}{2\sigma^{2}} \right) \right) = -\frac{\|(y-X \theta)\|_2^2}{2\sigma^{2}} + \text{constant}
+$$
+$$
+\log p(\theta) = \log \left( (\frac{1}{2b})^d \exp\left( -\frac{\|\theta\|_1}{b} \right) \right) = -\frac{\|\theta\|_1}{b} + \text{constant}
+$$
+$$
+\arg \min_{\theta} \left ( -\log​ p(y \mid X, \theta) - \log p(\theta) \right ) = \arg \min_{\theta} \frac{\|(y-X \theta)\|_2^2}{2\sigma^{2}} + \frac{\|\theta\|_1}{b} + \text{constant}
+$$
+$$
+\theta_{\text{MAP}}​ = \arg \min_{\theta} \frac{\|(y-X \theta)\|_2^2}{2\sigma^{2}} + \frac{\|\theta\|_1}{b}
+$$
+$$
+\boxed{ \theta_{\text{MAP}}​ = \arg \min_{\theta} \|(y-X \theta)\|_2^2 + \gamma\|\theta\|_1, \qquad \gamma = 2\frac{\sigma^{2}}{b}}
+$$
 
 \end{answer}

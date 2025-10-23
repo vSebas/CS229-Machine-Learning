@@ -12,6 +12,7 @@ $$
 $$$$
 \log p(y \mid x, \theta) = \log \left(\frac{1}{(2\pi\sigma^2)^{1/2}} \exp\left( -\frac{(y-x^T \theta)^2}{2\sigma^{2}} \right) \right) = -\frac{(y-x^T \theta)^2}{2\sigma^{2}} + \text{constant}
 $$
+With $\theta \sim \mathcal{N}(0,\eta^2 I)$, log of prior:
 $$
 \log p(\theta) = \log \left( \frac{1}{(2\pi\eta^{2})^{d/2}} \exp\left( -\frac{\theta^{T}\theta}{2\eta^{2}} \right) \right) = -\frac{\|\theta\|^2_{2}}{2\eta^{2}} + \text{constant}
 $$
