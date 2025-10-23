@@ -1,4 +1,11 @@
 \begin{answer}
 
+$$\theta_{\text{MAP}}=\arg\max_\theta\, p(\theta\mid x,y)$$
+
+Bayes:
+$$p(\theta\mid x,y)=\frac{p(y\mid x,\theta)\,p(\theta\mid x)}{p(y\mid x)}$$
+
+$p(y\mid x)$ can be dropped as it does not depend on $\theta$:
+$$\boxed{\;\theta_{\text{MAP}}=\arg\max_\theta\, p(y\mid x,\theta)\,p(\theta)\;}$$ 
 
 \end{answer}

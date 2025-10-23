@@ -1,3 +1,28 @@
 \begin{answer}
 
+$$
+\theta_{MAP}​= \arg\max_{\theta} p(y \mid x, \theta) p(\theta)
+$$
+Maximizing the product is the same as minimizing the negative log-likelihood
+$$
+\theta_{MAP}​= \arg\max_{\theta} p(y \mid x, \theta) p(\theta) = \arg \min_{\theta} \left( -\log(p(y \mid x, \theta) p(\theta)) \right )
+$$
+$$
+= \arg \min_{\theta} \left ( -\log​ p(y \mid x, \theta) - \log p(\theta) \right )
+$$$$
+\log p(y \mid x, \theta) = \log \left(\frac{1}{(2\pi\sigma^2)^{1/2}} \exp\left( -\frac{(y-x^T \theta)^2}{2\sigma^{2}} \right) \right) = -\frac{(y-x^T \theta)^2}{2\sigma^{2}} + \text{constant}
+$$
+$$
+\log p(\theta) = \log \left( \frac{1}{(2\pi\eta^{2})^{d/2}} \exp\left( -\frac{\theta^{T}\theta}{2\eta^{2}} \right) \right) = -\frac{\|\theta\|^2_{2}}{2\eta^{2}} + \text{constant}
+$$
+$$
+\arg \min_{\theta} \left ( -\log​ p(y \mid x, \theta) - \log p(\theta) \right ) = \arg \min_{\theta} \frac{(y-x^T \theta)^2}{2\sigma^{2}} + \frac{\|\theta\|^2_{2}}{2\eta^{2}} + \text{constant}
+$$
+
+$$
+\theta_{MAP}​ = \arg \min_{\theta} \frac{(y-x^T \theta)^2}{2\sigma^{2}} + \frac{\|\theta\|^2_{2}}{2\eta^{2}}
+$$
+$$
+\boxed{ \theta_{MAP} = \arg\min_{\theta} \Big( (y-x^T \theta)^{2} + \lambda\|\theta\|_2^{2} \Big), \qquad \lambda = \frac{2\sigma^{2}}{2\eta^{2}} = \frac{\sigma^{2}}{\eta^{2}} }
+$$
 \end{answer}
