@@ -89,13 +89,13 @@ class GDA:
             sigma += np.outer(diff, diff)
         sigma /= n_examples
 
-        theta_vec = np.linalg.inv(sigma) @ (mu_1 - mu_0)      # (d,)
-        theta0 = 0.5*(mu_0 @ np.linalg.inv(sigma) @ mu_0 - mu_1 @ np.linalg.inv(sigma) @ mu_1) - np.log((1 - phi)/phi)
+        sigma_inv = np.linalg.inv(sigma)
+        local_theta = sigma_inv @ (mu_1 - mu_0) 
+        theta0 = 0.5*(mu_0 @ sigma_inv @ mu_0 - mu_1 @ sigma_inv @ mu_1) - np.log((1 - phi)/phi)
 
-        self.theta = np.concatenate(([theta0], theta_vec))  # shape (d+1,) == (3,)
+        self.theta = np.concatenate(([theta0], local_theta))
 
         # Write theta in terms of the parameters
-        # self.theta =   @ (mu_1 - mu_0) # theta is a vector of shape (dim,)
         # *** END CODE HERE ***
 
     def predict(self, x):
@@ -109,9 +109,6 @@ class GDA:
         """
         # *** START CODE HERE ***
         g = lambda z: 1 / (1 + np.exp(-z))
-
-        if x.shape[1] == self.theta.shape[0] - 1:
-            x = np.concatenate([np.ones((x.shape[0], 1)), x], axis=1)
 
         return g(x @ self.theta)
         # *** END CODE HERE
