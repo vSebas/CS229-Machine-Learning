@@ -66,17 +66,12 @@ class GDA:
         # *** START CODE HERE ***
         x = x[:, 1:] 
         n_examples, dim = x.shape
-        # print(x, y)
-        # print(x.shape, y.shape)
-        # print(y == 0)
-        # print(x[y == 0]) # select rows where y == 0 by boolean indexing
 
         if self.theta is None:
             self.theta = np.zeros(dim)  # dim is the number of features (x1, x2, x3, ... , xd)
 
         sigma = np.zeros((dim, dim))
 
-        # Find phi, mu_0, mu_1, and sigma
         phi = np.mean(y)   # proportion of positive examples sum(y) / n_examples
         mu_0 = np.mean(x[y == 0], axis=0)  # mean of negative examples, axis=/rows means compute the mean for each column
         mu_1 = np.mean(x[y == 1], axis=0)  # mean of positive examples

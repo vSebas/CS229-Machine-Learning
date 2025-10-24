@@ -20,7 +20,10 @@ def get_words(message):
     """
 
     # *** START CODE HERE ***
+    message = message.lower()
+    words = message.split(" ")
 
+    return words
     # *** END CODE HERE ***
 
 
@@ -41,7 +44,20 @@ def create_dictionary(messages):
     """
 
     # *** START CODE HERE ***
+    word_count = collections.defaultdict(int)
+    for message in messages:
+        words = set(get_words(message))
+        for word in words:
+            word_count[word] += 1 # Count in how many messages the word appears
+    dictionary = {}
+    
+    index = 0
+    for word, count in word_count.items():
+        if count >= 5:
+            dictionary[word] = index # Assign index to the word if it appears in at least 5 messages
+            index += 1
 
+    return dictionary
     # *** END CODE HERE ***
 
 
@@ -66,7 +82,18 @@ def transform_text(messages, word_dictionary):
         j-th vocabulary word in the i-th message.
     """
     # *** START CODE HERE ***
+    num_messages = len(messages)
+    num_words = len(word_dictionary)
+    matrix = np.zeros((num_messages, num_words), dtype=int)
 
+    for i, message in enumerate(messages):
+        words = get_words(message)
+        for word in words:
+            if word in word_dictionary:
+                j = word_dictionary[word]
+                matrix[i, j] += 1 # Increment the count for the word in the message
+    
+    return matrix
     # *** END CODE HERE ***
 
 
@@ -87,6 +114,20 @@ def fit_naive_bayes_model(matrix, labels):
     """
 
     # *** START CODE HERE ***
+    num_messages, num_words = matrix.shape
+    model = {}
+    # Prior probabilities
+    model['prior_spam'] = np.sum(labels) / num_messages
+    model['prior_ham'] = 1 - model['prior_spam']
+    # Likelihoods with Laplace smoothing
+    spam_word_counts = np.sum(matrix[labels == 1], axis=0) + 1
+    ham_word_counts = np.sum(matrix[labels == 0], axis=0) + 1
+    total_spam_words = np.sum(spam_word_counts) + num_words
+    total_ham_words = np.sum(ham_word_counts) + num_words
+    model['likelihood_spam'] = spam_word_counts / total_spam_words
+    model['likelihood_ham'] = ham_word_counts / total_ham_words
+    
+    return model
 
     # *** END CODE HERE ***
 
@@ -104,6 +145,21 @@ def predict_from_naive_bayes_model(model, matrix):
     Returns: A numpy array containg the predictions from the model
     """
     # *** START CODE HERE ***
+    num_messages = matrix.shape[0]
+    predictions = np.zeros(num_messages, dtype=int)
+    log_prior_spam = np.log(model['prior_spam'])
+    log_prior_ham = np.log(model['prior_ham'])
+    log_likelihood_spam = np.log(model['likelihood_spam'])
+    log_likelihood_ham = np.log(model['likelihood_ham'])
+    for i in range(num_messages):
+        log_prob_spam = log_prior_spam + np.sum(matrix[i] * log_likelihood_spam)
+        log_prob_ham = log_prior_ham + np.sum(matrix[i] * log_likelihood_ham)
+        if log_prob_spam > log_prob_ham:
+            predictions[i] = 1
+        else:
+            predictions[i] = 0
+
+    return predictions
 
     # *** END CODE HERE ***
 
@@ -121,6 +177,16 @@ def get_top_five_naive_bayes_words(model, dictionary):
     Returns: A list of the top five most indicative words in sorted order with the most indicative first
     """
     # *** START CODE HERE ***
+    indicative_scores = {}
+    for word, index in dictionary.items():
+        prob_word_given_spam = model['likelihood_spam'][index]
+        prob_word_given_ham = model['likelihood_ham'][index]
+        indicative_score = prob_word_given_spam / prob_word_given_ham
+        indicative_scores[word] = indicative_score
+    sorted_words = sorted(indicative_scores, key=indicative_scores.get, reverse=True)
+    top_five_words = sorted_words[:5]
+    
+    return top_five_words
     
     # *** END CODE HERE ***
 
