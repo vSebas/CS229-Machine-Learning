@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1761258837 "/home/saveasmtz/Documents/CS229/ps2/tex/ps2.tex" "/home/saveasmtz/Documents/CS229/ps2/tex/ps2.pdf" "ps2" 1761258837
+["pdflatex"] 1761258873 "/home/saveasmtz/Documents/CS229/ps2/tex/ps2.tex" "/home/saveasmtz/Documents/CS229/ps2/tex/ps2.pdf" "ps2" 1761258874
   "/etc/texmf/web2c/texmf.cnf" 1761186848 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/saveasmtz/Documents/CS229/ps2/tex/ps2.aux" 1761258837 8 a94a2480d3289e625eea47cd1b285758 ""
+  "/home/saveasmtz/Documents/CS229/ps2/tex/ps2.aux" 1761258873 8 a94a2480d3289e625eea47cd1b285758 ""
   "/home/saveasmtz/Documents/CS229/ps2/tex/ps2.tex" 1760002112 1019 814f72a5f9dad40c0b2eaeb6a30a63fc ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
@@ -231,7 +231,7 @@
   "linearclass/00-main.tex" 1760002112 1693 8910a64a1f8846372b8f3874464aa855 ""
   "linearclass/01-gda-sol.tex" 1761254833 1706 2f38f08d0ef1cb9545499a79bb37fb52 ""
   "linearclass/01-gda.tex" 1760002112 1168 2967af0820264486f71bd23270c2fe65 ""
-  "linearclass/02-gda-ll-sol.tex" 1761258837 2699 70b03908cf1dfc1ec211c5ea6a81d831 ""
+  "linearclass/02-gda-ll-sol.tex" 1761258873 2695 a1b8bbef5a3c446aa675e89e14b10970 ""
   "linearclass/02-gda-ll.tex" 1760002112 1166 b530fed8a0cb0e8b56ce789c9c90535a ""
   "linearclass/03-solve-gda-sol.tex" 1760002112 29 d3860a38f35e90606a3f86cfa399a325 ""
   "linearclass/03-solve-gda.tex" 1760002112 836 7f20cdcf813ddd478d0f3ce3bcacd1c6 ""
@@ -252,8 +252,8 @@
   "spam/03-five-best.tex" 1760002112 654 4601735c4802718ac41d1cc9e00beeee ""
   (generated)
   "ps2.log"
-  "/home/saveasmtz/Documents/CS229/ps2/tex/ps2.log"
-  "ps2.aux"
   "ps2.out"
   "ps2.pdf"
+  "ps2.aux"
+  "/home/saveasmtz/Documents/CS229/ps2/tex/ps2.log"
   "/home/saveasmtz/Documents/CS229/ps2/tex/ps2.pdf"

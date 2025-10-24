@@ -64,7 +64,7 @@ class GDA:
             y: Training example labels. Shape (n_examples,).
         """
         # *** START CODE HERE ***
-        x = x[:, 1:]
+        x = x[:, 1:] 
         n_examples, dim = x.shape
         # print(x, y)
         # print(x.shape, y.shape)
@@ -73,7 +73,7 @@ class GDA:
 
         if self.theta is None:
             self.theta = np.zeros(dim)  # dim is the number of features (x1, x2, x3, ... , xd)
-        
+
         sigma = np.zeros((dim, dim))
 
         # Find phi, mu_0, mu_1, and sigma
@@ -89,8 +89,13 @@ class GDA:
             sigma += np.outer(diff, diff)
         sigma /= n_examples
 
+        theta_vec = np.linalg.inv(sigma) @ (mu_1 - mu_0)      # (d,)
+        theta0 = 0.5*(mu_0 @ np.linalg.inv(sigma) @ mu_0 - mu_1 @ np.linalg.inv(sigma) @ mu_1) - np.log((1 - phi)/phi)
+
+        self.theta = np.concatenate(([theta0], theta_vec))  # shape (d+1,) == (3,)
+
         # Write theta in terms of the parameters
-        self.theta =  np.linalg.inv(sigma) @ (mu_1 - mu_0) # theta is a vector of shape (dim,)
+        # self.theta =   @ (mu_1 - mu_0) # theta is a vector of shape (dim,)
         # *** END CODE HERE ***
 
     def predict(self, x):
@@ -103,8 +108,10 @@ class GDA:
             Outputs of shape (n_examples,).
         """
         # *** START CODE HERE ***
-
         g = lambda z: 1 / (1 + np.exp(-z))
+
+        if x.shape[1] == self.theta.shape[0] - 1:
+            x = np.concatenate([np.ones((x.shape[0], 1)), x], axis=1)
 
         return g(x @ self.theta)
         # *** END CODE HERE
