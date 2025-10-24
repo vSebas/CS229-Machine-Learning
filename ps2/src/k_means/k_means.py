@@ -32,7 +32,7 @@ def init_centroids(num_clusters, image):
     for k in range(num_clusters):
         i = random.randint(0, H - 1)
         j = random.randint(0, W - 1)
-        centroids_init[k] = image[i, j]
+        centroids_init[k] = image[i, j] # Assign RGB values of randomly chosen pixel to centroid
 
     # *** END YOUR CODE ***
 
@@ -73,21 +73,19 @@ def update_centroids(centroids, image, max_iter=30, print_every=10):
     for it in range(max_iter):
         if (it + 1) % print_every == 0:
             print(f'Iteration {it + 1}/{max_iter}')
-        # Assignment step
         labels = np.zeros((H, W), dtype=int)
         for i in range(H):
             for j in range(W):
                 dist = np.zeros(K)
                 for k in range(K):
-                    dist[k] = np.linalg.norm(image[i, j] - new_centroids[k])
-                labels[i, j] = np.argmin(dist)
-        # Update step
+                    dist[k] = np.linalg.norm(image[i, j] - new_centroids[k]) # Compute distance to each centroid
+                labels[i, j] = np.argmin(dist) # Assign pixel to closest centroid
         for k in range(K):
-            assigned_pixels = image[labels == k]
+            assigned_pixels = image[labels == k] # Get all pixels assigned to centroid k
             if len(assigned_pixels) > 0:
-                new_centroids[k] = np.mean(assigned_pixels, axis=0)
+                new_centroids[k] = np.mean(assigned_pixels, axis=0) # Update centroid to mean of assigned pixels
             else:
-                new_centroids[k] = image[random.randint(0, H - 1), random.randint(0, W - 1)]
+                new_centroids[k] = image[random.randint(0, H - 1), random.randint(0, W - 1)] # Reinitialize centroid if no pixels assigned
 
     # *** END YOUR CODE ***
 
@@ -125,8 +123,8 @@ def update_image(image, centroids):
             dist = np.zeros(K)
             for k in range(K):
                 dist[k] = np.linalg.norm(image[i, j] - centroids[k])
-            closest_centroid = np.argmin(dist)
-            image[i, j] = centroids[closest_centroid]
+            closest_centroid = np.argmin(dist) # Find index of closest centroid
+            image[i, j] = centroids[closest_centroid] # Update pixel value to closest centroid
 
     # *** END YOUR CODE ***
 

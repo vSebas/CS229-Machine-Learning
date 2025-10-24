@@ -115,19 +115,19 @@ def fit_naive_bayes_model(matrix, labels):
 
     # *** START CODE HERE ***
     num_messages, num_words = matrix.shape
-    model = {}
+    nb_model = {}
     # Prior probabilities
-    model['prior_spam'] = np.sum(labels) / num_messages
-    model['prior_ham'] = 1 - model['prior_spam']
+    nb_model['prior_spam'] = np.sum(labels) / num_messages
+    nb_model['prior_ham'] = 1 - nb_model['prior_spam']
     # Likelihoods with Laplace smoothing
     spam_word_counts = np.sum(matrix[labels == 1], axis=0) + 1
     ham_word_counts = np.sum(matrix[labels == 0], axis=0) + 1
     total_spam_words = np.sum(spam_word_counts) + num_words
     total_ham_words = np.sum(ham_word_counts) + num_words
-    model['likelihood_spam'] = spam_word_counts / total_spam_words
-    model['likelihood_ham'] = ham_word_counts / total_ham_words
+    nb_model['likelihood_spam'] = spam_word_counts / total_spam_words
+    nb_model['likelihood_ham'] = ham_word_counts / total_ham_words
     
-    return model
+    return nb_model
 
     # *** END CODE HERE ***
 
@@ -152,7 +152,7 @@ def predict_from_naive_bayes_model(model, matrix):
     log_likelihood_spam = np.log(model['likelihood_spam'])
     log_likelihood_ham = np.log(model['likelihood_ham'])
     for i in range(num_messages):
-        log_prob_spam = log_prior_spam + np.sum(matrix[i] * log_likelihood_spam)
+        log_prob_spam = log_prior_spam + np.sum(matrix[i] * log_likelihood_spam) # Compute log-probability for spam
         log_prob_ham = log_prior_ham + np.sum(matrix[i] * log_likelihood_ham)
         if log_prob_spam > log_prob_ham:
             predictions[i] = 1
@@ -177,16 +177,16 @@ def get_top_five_naive_bayes_words(model, dictionary):
     Returns: A list of the top five most indicative words in sorted order with the most indicative first
     """
     # *** START CODE HERE ***
-    indicative_scores = {}
+    scores = {}
     for word, index in dictionary.items():
         prob_word_given_spam = model['likelihood_spam'][index]
         prob_word_given_ham = model['likelihood_ham'][index]
-        indicative_score = prob_word_given_spam / prob_word_given_ham
-        indicative_scores[word] = indicative_score
-    sorted_words = sorted(indicative_scores, key=indicative_scores.get, reverse=True)
-    top_five_words = sorted_words[:5]
+        score = prob_word_given_spam / prob_word_given_ham # indicative score
+        scores[word] = score
+    sorted_words = sorted(scores, key=scores.get, reverse=True)
+    top = sorted_words[:5]
     
-    return top_five_words
+    return top
     
     # *** END CODE HERE ***
 
