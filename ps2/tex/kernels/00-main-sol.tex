@@ -1,3 +1,26 @@
 \begin{answer}
 
+\begin{enumerate}[label=(\alph*)]
+    \item Yes. If $K_1$ and $K_2$ are both valid kernels, for any vector $z$, we have $z^T K_1 z \geq 0$ and $z^T K_2 z \geq 0$, so
+    $z^T (K_1 + K_2) z = z^T K_1 z + z^T K_2 z \geq 0$.
+    Hence, $K_1 + K_2$ is also a valid kernel.
+
+    \item No. Even if $K_1$ and $K_2$ are valid kernels, their difference may not be PSD.
+    For example, if $K_2 = 2K_1$, then $K_1 - K_2 = -K_1$.
+
+    \item Yes. For $a>0$, $z^\top (aK_1) z = a \, z^\top K_1 z \ge 0$.
+
+    \item No. If $a>0$, then $z^\top (-aK_1) z = -a \, z^\top K_1 z \le 0$.
+    
+    \item Yes. The product of two valid kernels is also a valid kernel.
+    For example, if $K_1 = x^T z$ and $K_2 = (x^T z)^2$, then
+    $K = K_1K_2 = (x^T z)^3$, which is a valid kernel.
+
+    \item Yes. $K=f(x)f(z)$ is a valid kernel since it can be written as an inner product
+    with $\phi(x)=f(x)$. For any vector $\kappa$, $\kappa^T K \kappa = (\sum_i \kappa_i f(x^{(i)}))^2 \geq 0$.
+
+    \item Yes. If $K1​=x^Tz$ and $p(a)=1+2a+a^2$, then $K=p(K1​)=1+2(x^Tz)+(x^Tz)^2=(1+x^Tz)^2$,
+    which is the valid quadratic kernel.
+\end{enumerate}
+
 \end{answer}
