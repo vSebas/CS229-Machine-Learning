@@ -1,0 +1,9 @@
+\subsubsection*{Semi-supervised M-Step.}
+We have provided the closed form expressions for the parameter update rules for $\mu^{(t+1)}$, $\Sigma^{(t+1)}$ and $\phi^{(t+1)}$ based on the semi-supervised objective:
+
+\begin{align*}
+  \phi_j & := \frac{ \sum_{i=1}^\nexp w^{(i)}_j + \alpha \sum_{i=1}^{\tilde{\nexp}}\textbf{1}\{\tilde{z}^{(i)} = j\}}{\nexp + \alpha \tilde{\nexp}} \\
+  \mu_j & := \frac{ \sum_{i=1}^\nexp w^{(i)}_j\xsi + \alpha\sum_{i=1}^{\tilde{\nexp}} \textbf{1}\{\tilde{z}^{(i)} = j\}\tilde{x}^{(i)}} {\sum_{i=1}^\nexp w^{(i)}_j + \alpha\sum_{i=1}^{\tilde{\nexp}} \textbf{1}\{\tilde{z}^{(i)} = j\} } \\
+  \Sigma_j & := \frac{ \sum_{i=1}^\nexp w^{(i)}_j(\xsi-\mu_j)(\xsi-\mu_j)^T + \alpha\sum_{i=1}^{\tilde{\nexp}} \textbf{1}\{\tilde{z}^{(i)} = j\}(\tilde{x}^{(i)}-\mu_j)(\tilde{x}^{(i)}-\mu_j)^T} {\sum_{i=1}^\nexp w^{(i)}_j + \alpha\sum_{i=1}^{\tilde{\nexp}} \textbf{1}\{\tilde{z}^{(i)} = j\} }
+\end{align*}
+
