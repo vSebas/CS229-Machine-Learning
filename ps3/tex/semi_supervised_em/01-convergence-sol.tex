@@ -1,3 +1,62 @@
 \begin{answer}
 
+%\begin{align*}
+%    \ell_{\text{unsup}}(\theta) &= \sum_{i=1}^\nexp \log p(\xsi;\theta) \\
+%    &= \sum_{i=1}^\nexp \log \sum_{\zsi} p(\xsi,\zsi;\theta)
+%\end{align*}
+
+%\begin{align*}
+%    \ell_\text{sup}(\theta) &= \sum_{i=1}^{\tilde{\nexp}} \log p(\tilde{x}^{(i)},\tilde{z}^{(i)};\theta) \\
+%    \ell_{\text{semi-sup}}(\theta) &= \ell_\text{unsup}(\theta) + \alpha \ell_\text{sup}(\theta)
+%\end{align*}
+
+First optimize $\log p(x)$ for a single example $i$:
+$$
+\log p(x^{(i)};\theta)=\log \sum_{z^{(i)}} p(x^{(i)}, z^{(i)};\theta)
+$$
+
+Define $Q_i(z)$ as distribution over the possible values of $z$, $\sum_{z} Q(z) = 1$ and $Q(z)\geq 0$
+$$
+\log p(x^{(i)};\theta) = \log \sum_{z^{(i)}} Q_i(z^{(i)}) \frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})}
+$$
+Since log is concave, we can apply Jensen's inequality:
+$$
+\log \sum_{z^{(i)}} Q_i(z^{(i)}) \frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})} \geq
+\sum_{z^{(i)}} Q_i(z^{(i)}) \log \frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})} := \mathrm{ELBO}(x^{(i)};Q_i,\theta)
+$$
+Hence for all $Q_i$, ELBO gives a lower-bound on $\log p(x;\theta)$:
+$$
+\log p(x^{(i)};\theta) \ge \mathrm{ELBO}(x^{(i)};Q_i,\theta)
+$$
+Summing over $i$,
+$$
+\ell_{unsup}(\theta) = \sum_{i=1}^n \log p(x^{(i)};\theta)
+\;\ge\;
+\sum_{i=1}^n \mathrm{ELBO}(x^{(i)};Q_i,\theta).
+$$
+
+Now, in the E-step, we set $Q_i$ to be the posterior distribution of the latent variable $z^{(i)}$ given $x^(i)$ and current parameters $\theta^{(t)}$ for the unlabeled data:
+\begin{align*}
+    Q_i^{(t)}(z^{(i)}) = p(z^{(i)}|x^{(i)};\theta^{(t)})
+\end{align*}
+This choice of $Q_i^{(t)}$ gives the tightest lower bound, as attained by equality:
+\begin{align*}
+    \log p(x^{(i)};\theta^{(t)}) = \mathrm{ELBO}(x^{(i)};Q_i^{(t)},\theta^{(t)})
+\end{align*}
+
+In the M-step, we maximize the ELBO w.r.t. $\theta$ for fixed $Q_i^{(t)}$:
+$$
+\theta^{(t+1)} := \arg\max_\theta \sum_{i=1}^n \mathrm{ELBO}(x^{(i)};Q_i^{(t)},\theta) + \alpha \sum_{i=1}^{\tilde{n}}\log p(\tilde{x}^{(i)}, \tilde{z}^{(i)}; \theta)\\
+$$
+
+This guarantees that the log-likelihood does not decrease:
+\begin{align*}
+    \ell_(\theta^{(t+1)}) &\ge \sum_{i=1}^n \mathrm{ELBO}(x^{(i)};Q_i^{(t)},\theta^{(t+1)}) + \alpha \ell_{\text{sup​}}(\theta(t+1)) \\
+    &\ge \sum_{i=1}^n \mathrm{ELBO}(x^{(i)};Q_i^{(t)},\theta^{(t)}) \\
+    &= \ell_{unsup}(\theta^{(t)})
+\end{align*}
+
+Thus, the EM algorithm produces a sequence of parameters $\{\theta^{(t)}\}$ such that the log-likelihood $\ell_{unsup}(\theta^{(t)})$ is non-decreasing with each iteration.
+
+
 \end{answer}
