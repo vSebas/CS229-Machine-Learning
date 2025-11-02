@@ -1,25 +1,23 @@
 \begin{answer}
-
 %\begin{align*}
 %    \ell_{\text{unsup}}(\theta) &= \sum_{i=1}^\nexp \log p(\xsi;\theta) \\
 %    &= \sum_{i=1}^\nexp \log \sum_{\zsi} p(\xsi,\zsi;\theta)
 %\end{align*}
-
 %\begin{align*}
 %    \ell_\text{sup}(\theta) &= \sum_{i=1}^{\tilde{\nexp}} \log p(\tilde{x}^{(i)},\tilde{z}^{(i)};\theta) \\
 %    \ell_{\text{semi-sup}}(\theta) &= \ell_\text{unsup}(\theta) + \alpha \ell_\text{sup}(\theta)
 %\end{align*}
 
-First optimize $\log p(x)$ for a single example $i$:
+\subsubsection*{Lower bound on unlabeled data}
+For one example \(i\),
 $$
 \log p(x^{(i)};\theta)=\log \sum_{z^{(i)}} p(x^{(i)}, z^{(i)};\theta)
 $$
-
-Define $Q_i(z)$ as distribution over the possible values of $z$, $\sum_{z} Q(z) = 1$ and $Q(z)\geq 0$
+Let \(Q_i(z^{(i)})\) be any distribution over \(z^{(i)}\) such that $\sum_{z} Q(z) = 1$ and $Q(z)\geq 0$. Then
 $$
 \log p(x^{(i)};\theta) = \log \sum_{z^{(i)}} Q_i(z^{(i)}) \frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})}
 $$
-Since log is concave, we can apply Jensen's inequality:
+By Jensen’s inequality (since \(\log\) is concave),
 $$
 \log \sum_{z^{(i)}} Q_i(z^{(i)}) \frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})} \geq
 \sum_{z^{(i)}} Q_i(z^{(i)}) \log \frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})} := \mathrm{ELBO}(x^{(i)};Q_i,\theta)
@@ -28,14 +26,14 @@ Hence for all $Q_i$, ELBO gives a lower-bound on $\log p(x;\theta)$:
 $$
 \log p(x^{(i)};\theta) \ge \mathrm{ELBO}(x^{(i)};Q_i,\theta)
 $$
-Summing over $i$,
 $$
-\ell_{unsup}(\theta) = \sum_{i=1}^n \log p(x^{(i)};\theta)
+\ell_{\text{unsup}}(\theta) = \sum_{i=1}^n \log p(x^{(i)};\theta)
 \;\ge\;
 \sum_{i=1}^n \mathrm{ELBO}(x^{(i)};Q_i,\theta).
 $$
 
-Now, in the E-step, we set $Q_i$ to be the posterior distribution of the latent variable $z^{(i)}$ given $x^(i)$ and current parameters $\theta^{(t)}$ for the unlabeled data:
+\subsubsection*{E-Step (for unlabeled data)}
+Set $Q_i$ to be the posterior distribution of $z^{(i)}$ given $x^{(i)}$ and current $\theta^{(t)}$:
 \begin{align*}
     Q_i^{(t)}(z^{(i)}) = p(z^{(i)}|x^{(i)};\theta^{(t)})
 \end{align*}
@@ -43,20 +41,37 @@ This choice of $Q_i^{(t)}$ gives the tightest lower bound, as attained by equali
 \begin{align*}
     \log p(x^{(i)};\theta^{(t)}) = \mathrm{ELBO}(x^{(i)};Q_i^{(t)},\theta^{(t)})
 \end{align*}
+For labeled examples \((\tilde x^{(i)},\tilde z^{(i)})\),
+the latent variable is known and no \(Q_i\) is introduced.
 
-In the M-step, we maximize the ELBO w.r.t. $\theta$ for fixed $Q_i^{(t)}$:
+
+\subsubsection*{M-Step}
+Maximize the ELBO w.r.t. $\theta$ for fixed $Q_i^{(t)}$:
 $$
-\theta^{(t+1)} := \arg\max_\theta \sum_{i=1}^n \mathrm{ELBO}(x^{(i)};Q_i^{(t)},\theta) + \alpha \sum_{i=1}^{\tilde{n}}\log p(\tilde{x}^{(i)}, \tilde{z}^{(i)}; \theta)\\
+\theta^{(t+1)} := \arg\max_\theta 
+\left \{ \sum_{i=1}^n \mathrm{ELBO}(x^{(i)};Q_i^{(t)},\theta) + \alpha \sum_{i=1}^{\tilde{n}}\log p(\tilde{x}^{(i)}, \tilde{z}^{(i)}; \theta^{(t)}) \right \}
 $$
 
-This guarantees that the log-likelihood does not decrease:
+\subsubsection*{Monotonic convergence}
+
+As each iteration tightens and then maximizes the bound,
+$$
+\boxed{
 \begin{align*}
-    \ell_(\theta^{(t+1)}) &\ge \sum_{i=1}^n \mathrm{ELBO}(x^{(i)};Q_i^{(t)},\theta^{(t+1)}) + \alpha \ell_{\text{sup​}}(\theta(t+1)) \\
-    &\ge \sum_{i=1}^n \mathrm{ELBO}(x^{(i)};Q_i^{(t)},\theta^{(t)}) \\
-    &= \ell_{unsup}(\theta^{(t)})
+    \ell_{\text{semi}}(\theta^{(t+1)}) 
+    &=      \ell_{\text{unsup}}(\theta^{(t+1)})+\alpha\,\ell_{\text{sup}}(\theta^{(t+1)}) \\
+    &\ge    \sum_{i=1}^n\mathrm{ELBO}(x^{(i)};Q_i^{(t)},\theta^{(t+1)}) + \alpha\,\ell_{\text{sup}}(\theta^{(t+1)}) \\
+    &\ge    \sum_{i=1}^n\mathrm{ELBO}(x^{(i)};Q_i^{(t)},\theta^{(t)}) + \alpha\,\ell_{\text{sup}}(\theta^{(t)}) \\
+    &=      \ell_{\text{unsup}}(\theta^{(t)}) + \alpha \ell_{\text{sup​}}(\theta^{(t)}) = \ell_{\text{semi}}(\theta^{(t)})
 \end{align*}
+}
+$$
 
-Thus, the EM algorithm produces a sequence of parameters $\{\theta^{(t)}\}$ such that the log-likelihood $\ell_{unsup}(\theta^{(t)})$ is non-decreasing with each iteration.
+\begin{itemize}
+    \item First inequality: ELBO is a lower bound on each \(\log p(x^{(i)};\theta^{(t+1)})\).
+    \item Second inequality: \(\theta^{(t+1)}\) is chosen from the M-step.
+    \item Last equality: tightness at \(\theta^{(t)}\).
+\end{itemize}
 
-
+Thus, the EM algorithm produces a sequence of parameters such that the log-likelihood $\ell_{\text{semi}}(\theta^{(t)})$ is non-decreasing with each iteration.
 \end{answer}
