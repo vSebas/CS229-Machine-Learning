@@ -26,12 +26,27 @@ def main(is_semi_supervised, trial_num):
     # *** START CODE HERE ***
     # (1) Initialize mu and sigma by splitting the n_examples data points uniformly at random
     # into K groups, then calculating the sample mean and covariance for each group
+    n, dim = x.shape
+    np.random.shuffle(x)
 
+    cut = n // K
+    mu = [x[k*cut:cut*(k+1)].mean(axis=0) for k in range(K)] # axis=0 means column-wise mean
+    sigma = [np.cov(x[k*cut:cut*(k+1)], rowvar=False) + 1e-6*np.eye(dim) for k in range(K)]
+    
     # (2) Initialize phi to place equal probability on each Gaussian
     # phi should be a numpy array of shape (K,)
+    phi = np.ones(K) / K
 
     # (3) Initialize the w values to place equal probability on each Gaussian
-    # w should be a numpy array of shape (m, K)
+    # w should be a numpy array of shape (n, K)
+    w = np.ones((n, K)) / K
+
+    # print(x.shape)
+    # print(w.shape)
+    # print(phi.shape)
+    # print(len(mu), mu[0].shape)
+    # print(len(sigma), sigma[0].shape)
+    
     # *** END CODE HERE ***
 
     if is_semi_supervised:
@@ -74,17 +89,41 @@ def run_em(x, w, phi, mu, sigma):
     it = 0
     ll = prev_ll = None
     while it < max_iter and (prev_ll is None or np.abs(ll - prev_ll) >= eps):
-        pass  # Just a placeholder for the starter code
         # *** START CODE HERE
         # (1) E-step: Update your estimates in w
+        w = e_step(x, w, phi, mu, sigma)
 
         # (2) M-step: Update the model parameters phi, mu, and sigma
+        phi, mu, sigma = m_step(x, w, mu, sigma)
 
         # (3) Compute the log-likelihood of the data to check for convergence.
         # By log-likelihood, we mean `ll = sum_x[log(sum_z[p(x|z) * p(z)])]`.
         # We define convergence by the first iteration where abs(ll - prev_ll) < eps.
         # Hint: For debugging, recall part (a). We showed that ll should be monotonically increasing.
        
+        n, d = x.shape
+        prev_ll = ll
+        ll = 0.0
+
+        for i in range(n):
+            temp = 0.0
+            for j in range(len(mu)):
+                diff = x[i] - mu[j]
+                sigma_inv = np.linalg.inv(sigma[j])
+                det_sigma = np.linalg.det(sigma[j])
+                two_pi = (2.0 * np.pi)** (d / 2)
+                norm_const = 1.0 / (two_pi * np.sqrt(det_sigma))
+
+                exp_term = np.exp(-0.5 * diff.T @ sigma_inv @ diff)
+                p_x_given_z = norm_const * exp_term
+
+                temp += phi[j] * p_x_given_z
+            ll += np.log(temp)
+    
+        it += 1
+
+        print(f"Iteration {it}, log-likelihood: {ll}")
+
         # *** END CODE HERE ***
 
     return w
@@ -122,12 +161,51 @@ def run_semi_supervised_em(x, x_tilde, z_tilde, w, phi, mu, sigma):
         pass  # Just a placeholder for the starter code
         # *** START CODE HERE ***
         # (1) E-step: Update your estimates in w
+        w = e_step(x, w, phi, mu, sigma)
 
         # (2) M-step: Update the model parameters phi, mu, and sigma
-
+        phi, mu, sigma = m_step_ss(x, x_tilde, z_tilde, w, phi, mu, sigma, alpha)
+        
         # (3) Compute the log-likelihood of the data to check for convergence.
         # Hint: Make sure to include alpha in your calculation of ll.
         # Hint: For debugging, recall part (a). We showed that ll should be monotonically increasing.
+        
+        n, d = x.shape
+        prev_ll = ll
+        ll = 0.0
+
+        for i in range(n):
+            temp = 0.0
+            for j in range(len(mu)):
+                diff = x[i] - mu[j]
+                sigma_inv = np.linalg.inv(sigma[j])
+                det_sigma = np.linalg.det(sigma[j])
+                two_pi = (2.0 * np.pi)** (d / 2)
+                norm_const = 1.0 / (two_pi * np.sqrt(det_sigma))
+
+                exp_term = np.exp(-0.5 * diff.T @ sigma_inv @ diff)
+                p_x_given_z = norm_const * exp_term
+
+                temp += phi[j] * p_x_given_z
+            ll += np.log(temp)
+
+        n_tilde = x_tilde.shape[0]
+        for m in range(n_tilde):
+            j = int(z_tilde[m])
+            diff = x_tilde[m] - mu[j]
+            sigma_inv = np.linalg.inv(sigma[j])
+            det_sigma = np.linalg.det(sigma[j])
+            two_pi = (2.0 * np.pi)** (d / 2)
+            norm_const = 1.0 / (two_pi * np.sqrt(det_sigma))
+
+            exp_term = np.exp(-0.5 * diff.T @ sigma_inv @ diff)
+            p_x_given_z = norm_const * exp_term
+
+            ll += alpha * np.log(phi[j] * p_x_given_z)
+
+        it += 1
+        
+        print(f"Iteration {it}, log-likelihood: {ll}")
         
         # *** END CODE HERE ***
 
@@ -139,14 +217,29 @@ def run_semi_supervised_em(x, x_tilde, z_tilde, w, phi, mu, sigma):
 
 def e_step(x, w, phi, mu, sigma):
     """E-step for both unsupervised and semi-supervised EM."""
-    pass
+    w_j = np.zeros_like(w)
+    d = x.shape[1] # dimension of data points
+    two_pi = (2.0 * np.pi)** (d / 2)
+    N = np.zeros_like(w)
+
+    for j in range(len(mu)):
+        diff = x - mu[j]
+        sigma_inv = np.linalg.inv(sigma[j])
+        det_sigma = np.linalg.det(sigma[j])
+        norm_const = 1.0 / (two_pi * np.sqrt(det_sigma))
+
+        exp_term = np.exp(-0.5 * np.sum(diff @ sigma_inv * diff, axis=1))
+        N[:, j] = norm_const * exp_term
+        w_j[:, j] = phi[j] * N[:, j]
+
+    w = w_j / np.sum(w_j, axis=1, keepdims=True)
 
     return w
 
 
 def m_step(x, w, mu, sigma):
     """M-step for unsupervised EM."""
-    n, d = x.shape
+    n = x.shape[0]
     k = len(mu)
 
     phi = np.mean(w, axis=0)
@@ -161,12 +254,43 @@ def m_step(x, w, mu, sigma):
             sigma[j] += w[i, j] * np.outer(x_minus_mu, x_minus_mu)
         sigma[j] /= np.sum(w_j)
 
+    # print(phi.shape)
+    # print(len(mu), mu[0].shape)
+    # print(len(sigma), sigma[0].shape)
+
     return phi, mu, sigma
 
 
 def m_step_ss(x, x_tilde, z_tilde, w, phi, mu, sigma, alpha):
     """M-step for semi-supervised EM."""
-    pass
+
+    n = x.shape[0]
+    n_tilde = x_tilde.shape[0]
+    k = len(mu)
+
+    zj_counts = np.bincount(z_tilde.flatten().astype(int), minlength=k)
+    phi = (np.sum(w, axis=0) + alpha * zj_counts) / (n + alpha * n_tilde) 
+
+    mu =  (np.dot(w.T, x) + alpha * np.array([x_tilde[z_tilde.flatten() == j].sum(axis=0) for j in range(k)])) /\
+          np.array(np.sum(w, axis=0) + alpha * zj_counts)[:, np.newaxis]
+
+    for j in range(k):
+        w_j = w[:, j:j + 1]
+
+        sigma[j] = np.zeros_like(sigma[j])
+        sigma_sup = np.zeros_like(sigma[j])
+
+        for i in range(n):
+            x_minus_mu = x[i] - mu[j]
+            sigma_unsup = w[i, j] * np.outer(x_minus_mu, x_minus_mu)
+            sigma_sup = alpha * np.sum([np.outer(x_tilde[m] - mu[j], x_tilde[m] - mu[j])
+                                       for m in range(n_tilde) if z_tilde[m] == j], axis=0)
+            sigma[j] += sigma_unsup + sigma_sup
+        sigma[j] /= np.sum(w_j) + alpha * zj_counts[j]
+
+    # print(phi.shape)
+    # print(len(mu), mu[0].shape)
+    # print(len(sigma), sigma[0].shape)
 
     return phi, mu, sigma
 
@@ -238,6 +362,6 @@ if __name__ == '__main__':
         # uncomment the following line.
         # You do not need to add any other lines in this code block.
 
-        # main(is_semi_supervised=True, trial_num=t)
+        main(is_semi_supervised=True, trial_num=t)
 
         # *** END CODE HERE ***
