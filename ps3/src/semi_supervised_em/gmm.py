@@ -278,14 +278,16 @@ def m_step_ss(x, x_tilde, z_tilde, w, phi, mu, sigma, alpha):
         w_j = w[:, j:j + 1]
 
         sigma[j] = np.zeros_like(sigma[j])
-        sigma_sup = np.zeros_like(sigma[j])
+
+        sigma_sup = alpha * np.sum([np.outer(x_tilde[m] - mu[j], x_tilde[m] - mu[j])
+                                    for m in range(n_tilde) if z_tilde[m] == j], axis=0)
 
         for i in range(n):
             x_minus_mu = x[i] - mu[j]
             sigma_unsup = w[i, j] * np.outer(x_minus_mu, x_minus_mu)
-            sigma_sup = alpha * np.sum([np.outer(x_tilde[m] - mu[j], x_tilde[m] - mu[j])
-                                       for m in range(n_tilde) if z_tilde[m] == j], axis=0)
-            sigma[j] += sigma_unsup + sigma_sup
+            sigma[j] += sigma_unsup
+        
+        sigma[j] += sigma_sup
         sigma[j] /= np.sum(w_j) + alpha * zj_counts[j]
 
     # print(phi.shape)
