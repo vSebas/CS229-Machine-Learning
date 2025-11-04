@@ -1,3 +1,44 @@
 \begin{answer}
 
+For \(K\) classes, the class proportions vector in region \(R_m\) is:
+\[
+\vec{p}_m = 
+\begin{bmatrix}
+p_{m1} & p_{m2} & \dots & p_{mK}
+\end{bmatrix},
+\quad
+\text{where } 
+p_{mk} = \frac{\#\text{ samples of class }k}{|R_m|}, 
+\quad
+\sum_{k=1}^K p_{mk} = 1.
+\]
+
+The Hessian of \(G(\vec{p})\) is:
+\begin{align*}
+    \nabla^2 G(\vec{p}) = -2 \mathbb{I}_k
+\end{align*}
+Meaning that the Gini loss function is strictly concave in \(\vec{p}_m\) %for the binary classification problem.
+
+Recalling the difinition of the expectation for a discrete random variable:
+\begin{align*}
+    \mathbb{E}[X] = \sum_i P(X=x_i) \, x_i
+\end{align*}
+which represents the weighted mean of the possible values \(x_i\).
+
+For the child proportion vectors \(\vec{p}_1\) and \(\vec{p}_2\), with probabilities (weights) \(t\) and \(1-t\) respectively (of being selected), we have:
+\[
+\mathbb{E}[X] = t \vec{p}_1 + (1-t)\vec{p}_2.
+\]
+
+Then applying Jensen's inequality for concave functions, we have:
+\begin{align*}
+    G(\mathbb{E}[X]) & \geq \mathbb{E}[G(X)] \\
+    G(t \vec{p}_1 + (1-t)\vec{p}_2) &\ge t G(\vec{p}_1) + (1-t) G(\vec{p}_2).
+\end{align*}
+
+Since the Gini Loss is strictly concave, the inequality is strict whenever \(\vec{p}_1 \neq \vec{p}_2\):
+\[
+G(t \vec{p}_1 + (1-t)\vec{p}_2) > t G(\vec{p}_1) + (1-t) G(\vec{p}_2).
+\]
+
 \end{answer}

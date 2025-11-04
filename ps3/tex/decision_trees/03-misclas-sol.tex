@@ -1,3 +1,27 @@
 \begin{answer}
 
+The misclassification loss remains unchanged when the parent's majority class is the same for the child nodes.
+
+The misclassification loss in region \(R_m\) is given by:
+\[
+M(R_m) = 1 - \frac{\max_k N_{mk}}{N_m}.
+\]
+After a split into two child nodes \(R_1\) and \(R_2\), the misclassification loss is:
+\[
+M(R_1, R_2) = \frac{N_1}{N_m} \left(1 - \frac{\max_k N_{1k}}{N_1}\right) + \frac{N_2}{N_m} \left(1 - \frac{\max_k N_{2k}}{N_2}\right).
+\]
+If both child nodes have the same majority class as the parent node, then:
+\[
+\max_k N_{1k} + \max_k N_{2k} = \max_k N_{mk}.
+\]
+The misclassification loss for the child nodes is then:
+\begin{align*}
+M(R_1, R_2) 
+&= \frac{N_1}{N_m} \left(1 - \frac{\max_k N_{1k}}{N_1}\right) + \frac{N_2}{N_m} \left(1 - \frac{\max_k N_{2k}}{N_2}\right) \\
+&= \frac{N_1 + N_2}{N_m} - \frac{\max_k N_{mk}}{N_m} \\
+&= 1 - \frac{\max_k N_{mk}}{N_m} = M(R_m)
+\end{align*}
+
+Thus, the misclassification loss remains unchanged after the split when both child nodes share the same majority class as the parent node.  
+
 \end{answer}

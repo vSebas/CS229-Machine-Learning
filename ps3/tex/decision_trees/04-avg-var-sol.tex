@@ -1,3 +1,32 @@
 \begin{answer}
 
+The variance of the sum of random variables and the scaling property are:
+\[
+\operatorname{Var}\!\left(\sum_i X_i\right) 
+= \sum_i \operatorname{Var}(X_i) + 2\sum_{i<j} \operatorname{Cov}(X_i, X_j),
+\qquad
+\operatorname{Var}(cX) = c^2 \operatorname{Var}(X).
+\]
+
+Covariance is defined as:
+\[
+\operatorname{Cov}(X, Y) = \operatorname{Corr}(X, Y)\,\sqrt{\operatorname{Var}(X)\operatorname{Var}(Y)}.
+\]
+
+Since all trees \(T_1, T_2, \dots, T_B\) share the same variance \(\sigma^2\) and pairwise correlation \(\rho\),
+\[
+\operatorname{Cov}(T_i, T_j) = \rho\,\sigma^2 \quad \text{for } i \neq j.
+\]
+
+Then, the variance of the average prediction is:
+\begin{align*}
+\operatorname{Var}\!\left(\frac{1}{B}\sum_{i=1}^B T_i\right) 
+&= \frac{1}{B^2} \left( \sum_{i=1}^B \operatorname{Var}(T_i) + 2\sum_{i<j} \operatorname{Cov}(T_i, T_j) \right) \\
+&= \frac{1}{B^2} \left( B\sigma^2 + 2 \cdot \frac{B(B-1)}{2}\rho\sigma^2 \right) \\
+&= \frac{1}{B^2} \left( B\sigma^2 + B(B-1)\rho\sigma^2 \right) \\
+&= \frac{\sigma^2}{B}\big(1 + (B-1)\rho\big) \\
+&= \rho\sigma^2 + \frac{1-\rho}{B}\sigma^2.
+\end{align*}
+
+
 \end{answer}

@@ -1,3 +1,21 @@
 \begin{answer}
 
+The Gini loss remains unchanged after a split in two cases:
+
+\textbf{Case 1}: One child node is empty (\(t = 0\) or \(t=1\)). Then:
+\[
+tG(\vec{p}_{1}) + (1-t)G(\vec{p}_{2}) =  0 \cdot G(\vec{p}_{1}) + G(\vec{p}_{2}) = G(\vec{p}),
+\]
+
+\textbf{Case 2}: Both child nodes have the same class proportions as the parent node (\(\vec{p}_{1} = \vec{p}_{2} = p\)):
+\[
+tG(\vec{p}_{1}) + (1-t)G(\vec{p}_{2}) =  tG(\vec{p}) + (1-t)G(\vec{p}) = G(\vec{p}),
+\]
+
+which is equal to the Gini loss before the split in both cases.
+
+These cases do not contradict the strict concavity of the Gini loss, since concavity holds when the two child nodes differ in class proportions, and both cases above are the allowed equality conditions of concavity.
+
+Furthermore, these cases do not prevent a fully grown tree from achivieng zero Gini loss. 
+They may temporarilly stall the reduction at certain splits, but subsequent splits can still lead to pure nodes with zero Gini loss.
 \end{answer}
