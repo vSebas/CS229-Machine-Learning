@@ -1,4 +1,28 @@
 \begin{answer}
+\subsubsection*{0-1 indicator function}
+For each training example $(x_i,y_i)$, define margin $t_i := y_i f(x_i)$. Then $t_i>0$ when $x_i$ is correctly classified, and $t_i<0$ when it is misclassified.
+Thus the misclassification indicator can be written as
+\[
+\mathbf{1}\{F(x_i)\neq y_i\}=\mathbf{1}\{t_i<0\}.
+\]
 
-	
+\subsubsection*{Upper bound on 0-1 loss}
+Consider two cases: 
+\begin{itemize} 
+    \item If \(t_i < 0\) (misclassification), then \(\mathbbm{1}[t_i < 0] = 1\) and \(\exp(-t_i) > 1\)
+    \item If \(t_i \ge 0\) (correct), then \(\mathbbm{1}[t_i < 0] = 0\) and \(\exp(-t_i) \ge 0\)
+\end{itemize} 
+Therefore, in both cases, we have:
+\[
+\mathbbm{1}[t_i < 0] \le \exp(-t_i)
+\]
+
+\subsubsection*{Overall loss bound}
+Averaging over the dataset,
+\[
+\frac{1}{n}\sum_{i=1}^n \mathbf{1}\{F(x_i)\neq y_i\}
+\;\le\;
+\frac{1}{n}\sum_{i=1}^n e^{-\,y_i f(x_i)}.
+\]
+    
 \end{answer}
