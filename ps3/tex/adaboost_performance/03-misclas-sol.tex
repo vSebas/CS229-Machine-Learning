@@ -1,3 +1,60 @@
 \begin{answer}
+    \begin{enumerate}[label=(\roman*)]
+        \item 
+        Differentiate and set to zero
+        
+        \begin{equation*}
+        \begin{align*}
+            \frac{d}{d\tilde{w}}Z_t &= 0 = -(1 - \varepsilon) \exp(-\tilde{w}_t) + \varepsilon_t \exp(\tilde{w}_t)
+        \end{align*}
+        \end{equation*}
 
+        Then,
+        $$
+            \tilde{w}_t^* = \frac{1}{2} \log(\frac{1-\varepsilon_t}{\varepsilon_t})
+        $$
+        
+        So,
+        $$
+            Z_{t}^{\text{opt}} = (1 - \varepsilon) \sqrt{\frac{\varepsilon}{1 - \varepsilon}} + \varepsilon_t \sqrt{\frac{1 - \varepsilon}{\varepsilon}} = \boxed{2\sqrt{\varepsilon_t(1-\varepsilon_t)}}
+        $$
+
+        \item 
+        \[
+        Z_t^{\mathrm{opt}}
+        = 2\sqrt{\varepsilon_t(1-\varepsilon_t)}
+        = 2\sqrt{\left(\tfrac{1}{2}-\gamma_t\right)\left(\tfrac{1}{2}+\gamma_t\right)}
+        = 2\sqrt{\tfrac{1}{4}-\gamma_t^2}
+        = \sqrt{1-4\gamma_t^2}.
+        \]
+        Taking logarithms and using the inequality $\log(1-x) \le -x$ for $0 \le x < 1$:
+        \[
+        \log Z_t^{\mathrm{opt}} = \tfrac{1}{2}\log(1 - 4\gamma_t^2)
+        \le \tfrac{1}{2}(-4\gamma_t^2)
+        = -2\gamma_t^2.
+        \]
+        Exponentiating both sides gives
+        \[
+        \boxed{Z_t^{\mathrm{opt}} \le e^{-2\gamma_t^2}.}
+        \]
+
+        \item 
+        If each weak classifier is better than random, i.e.\ $\gamma_t \ge \gamma > 0$ for all $t$, then
+        \[
+        \varepsilon_{\mathrm{training}}
+        \;\le\;
+        \prod_{t=1}^T Z_t
+        \;\le\;
+        \prod_{t=1}^T e^{-2\gamma_t^2}
+        \;=\;
+        e^{-2\sum_{t=1}^T \gamma_t^2}
+        \;\le\;
+        e^{-2T\gamma^2}.
+        \]
+        Thus
+        \[
+        \boxed{\varepsilon_{\mathrm{training}} \le e^{-2T\gamma^2},}
+        \]
+
+        \end{enumerate}
 \end{answer}

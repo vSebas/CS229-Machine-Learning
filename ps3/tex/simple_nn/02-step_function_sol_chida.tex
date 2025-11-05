@@ -1,0 +1,32 @@
+\begin{answer}
+
+If each hidden unit uses a step activation:
+$$
+h_j(x) = \mathbbm{1}\{\, w^{[1]}_{1,j}x_1 + w^{[1]}_{2,j}x_2 + w^{[1]}_{0,j} > 0 \,\},
+\qquad j = 1,2,3,
+$$
+we can interpret each hidden unit as testing one of the three half-spaces defined by the edges of the triangle.
+
+Choose the hidden unit weights and biases so that each line
+$$
+w^{[1]}_{1,j}x_1 + w^{[1]}_{2,j}x_2 + w^{[1]}_{0,j} = 0
+$$
+coincides with one side of the triangle, with the normal vector pointing \emph{inward}.
+Then any point inside the triangle satisfies all three inequalities and gives
+$$
+h_1 = h_2 = h_3 = 1,
+$$
+while a point outside violates at least one, producing at least one $h_j=0$.
+
+The output neuron can then implement a logical AND:
+$$
+o(x) = \mathbbm{1}\{\, w^{[2]}_1 h_1 + w^{[2]}_2 h_2 + w^{[2]}_3 h_3 + w^{[2]}_0 > 0 \,\},
+$$
+with, for example,
+$$
+w^{[2]}_1 = w^{[2]}_2 = w^{[2]}_3 = 1, \qquad w^{[2]}_0 = -2.5.
+$$
+Thus, $o(x)=1$ if and only if all $h_j=1$, i.e., if the point lies inside the triangle.
+Hence, the network can achieve $100\%$ training accuracy.
+
+\end{answer}

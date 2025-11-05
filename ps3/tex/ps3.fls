@@ -249,6 +249,8 @@ INPUT /usr/share/texlive/texmf-dist/tex/latex/doublestroke/dsfont.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/doublestroke/dsfont.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
 INPUT /usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
+INPUT /home/saveasmtz/Documents/CS229/ps3/tex/ps3.aux
+INPUT /home/saveasmtz/Documents/CS229/ps3/tex/ps3.aux
 OUTPUT /home/saveasmtz/Documents/CS229/ps3/tex/ps3.aux
 INPUT /usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -405,10 +407,16 @@ INPUT /home/saveasmtz/Documents/CS229/ps3/tex/simple_nn/02-step_function.tex
 INPUT /home/saveasmtz/Documents/CS229/ps3/tex/simple_nn/02-step_function.tex
 INPUT /home/saveasmtz/Documents/CS229/ps3/tex/simple_nn/02-step_function_sol.tex
 INPUT /home/saveasmtz/Documents/CS229/ps3/tex/simple_nn/02-step_function_sol.tex
+INPUT /home/saveasmtz/Documents/CS229/ps3/tex/figs/step_weights.pdf
+INPUT /home/saveasmtz/Documents/CS229/ps3/tex/figs/step_weights.pdf
+INPUT /home/saveasmtz/Documents/CS229/ps3/tex/figs/step_weights.pdf
 INPUT /home/saveasmtz/Documents/CS229/ps3/tex/simple_nn/03-linear.tex
 INPUT /home/saveasmtz/Documents/CS229/ps3/tex/simple_nn/03-linear.tex
 INPUT /home/saveasmtz/Documents/CS229/ps3/tex/simple_nn/03-linear_sol.tex
 INPUT /home/saveasmtz/Documents/CS229/ps3/tex/simple_nn/03-linear_sol.tex
+INPUT /home/saveasmtz/Documents/CS229/ps3/tex/figs/linear_weights.pdf
+INPUT /home/saveasmtz/Documents/CS229/ps3/tex/figs/linear_weights.pdf
+INPUT /home/saveasmtz/Documents/CS229/ps3/tex/figs/linear_weights.pdf
 INPUT /home/saveasmtz/Documents/CS229/ps3/tex/ps3.aux
 INPUT /home/saveasmtz/Documents/CS229/ps3/tex/ps3.out
 INPUT /home/saveasmtz/Documents/CS229/ps3/tex/ps3.out
@@ -416,6 +424,7 @@ INPUT /home/saveasmtz/.texlive2019/texmf-var/fonts/pk/ljfour/public/bbm/bbm10.60
 INPUT /usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
+INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb
@@ -430,6 +439,7 @@ INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
+INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb

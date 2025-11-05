@@ -1,3 +1,43 @@
 \begin{answer}
 
+If each hidden unit uses a step activation:
+$$
+h_j(x) = \mathbbm{1}\{\, w^{[1]}_{1,j}x_1 + w^{[1]}_{2,j}x_2 + w^{[1]}_{0,j} > 0 \,\},
+\qquad j = 1,2,3,
+$$
+each one represents a linear inequality that defines one side of the triangle.
+
+By setting the hidden weights and biases so that these three lines match the triangle’s edges, with normal vectors pointing inward, points inside the triangle satisfy all three inequalities, producing 
+$h_1=h_2=h_3=1$. Points outside the triangle violate at least one of them.
+
+The output neuron can then implement a logical AND:
+$$
+o(x) = \mathbbm{1}\{\, w^{[2]}_1 h_1 + w^{[2]}_2 h_2 + w^{[2]}_3 h_3 + w^{[2]}_0 > 0 \,\},
+$$
+for example with $w^{[2]}_1 = w^{[2]}_2 = w^{[2]}_3 = 1$, and $w^{[2]}_0 = -2.5$.
+
+Then, the network outputs $1$ if and only if all three hidden units are active. Hence, the network can achieve $100\%$ training accuracy.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{/home/saveasmtz/Documents/CS229/ps3/tex/figs/step_weights.pdf}
+    \caption{Step Weights}
+    \label{fig:step_weights}
+\end{figure}
+
+
+In \texttt{src/simple\_nn/simple\_nn.py} the step activations are:
+\[
+h_1=\mathbbm{1}\{-0.5 + x_1 \ge 0\},\quad
+h_2=\mathbbm{1}\{-0.5 + x_2 \ge 0\},\quad
+h_3=\mathbbm{1}\{3.75 - x_1 - x_2 \ge 0\}.
+\]
+Since the dataset labels the exterior as $1$ (mean$(y)\approx0.77$), the output implements
+$\text{NOT-AND}$:
+\[
+o=\mathbbm{1}\{\,2.5 - h_1 - h_2 - h_3 > 0\,\}=1-\mathbbm{1}\{h_1=h_2=h_3=1\},
+\]
+yielding perfect accuracy. Fig. \ref{fig:step_weights} shows the plot with the perfect prediction.
+
+
 \end{answer}

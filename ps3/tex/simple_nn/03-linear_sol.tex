@@ -1,3 +1,42 @@
 \begin{answer}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{/home/saveasmtz/Documents/CS229/ps3/tex/figs/linear_weights.pdf}
+    \caption{Linear Weights}
+    \label{fig:linear_weights}
+\end{figure}
+
+If the hidden layer is linear,
+$$
+h_j(x) = w^{[1]}_{1,j}x_1 + w^{[1]}_{2,j}x_2 + w^{[1]}_{0,j},
+$$
+and the output is a step function:
+$$
+o(x) = \mathbbm{1}\{\, w^{[2]}_0 + \sum_{j=1}^3 w^{[2]}_j h_j(x) > 0 \,\},
+$$
+then the overall decision boundary is given by a single linear inequality
+$$
+o(x) = \mathbbm{1}\{\, b + v^\top x > 0 \,\}
+$$
+%for some $v \in \mathbb{R}^2$, $b \in \mathbb{R}$.
+
+%This corresponds to a single separating hyperplane. Since the dataset in Figure~1
+%is separated by a \emph{triangle-shaped} region (not linearly separable by one plane),
+%the network cannot achieve perfect classification in this configuration.
+
+This corresponds to a single straight line in the input space, so the model can only separate 
+the data with one half-plane. Because the dataset is defined by a triangular region, which requires three boundaries,
+ such a network cannot perfectly classify all points. So a linear hidden layer followed by a single 
+ step output is insufficient to achieve perfect accuracy.
+
+%$$
+%\boxed{\text{Perfect accuracy is impossible with linear hidden units and a single step output.}}
+%$$
+
+In \texttt{src/simple\_nn/simple\_nn.py}, with linear hidden units, the network reduces to
+$o(x)=\mathbbm{1}\{b+v^\top x>0\}$. A single line cannot realize the triangular decision set,
+ so perfect classification is impossible; we obtain $\approx0.701$ in the example. Fig. \ref{fig:linear_weights} shows the plot with the prediction.
+
+
 \end{answer}

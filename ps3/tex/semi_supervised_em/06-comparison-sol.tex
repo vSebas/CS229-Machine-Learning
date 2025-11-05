@@ -1,3 +1,19 @@
 \begin{answer}
+    \begin{enumerate}[label=\roman*.]
+        \item 
+        The semi-supervised EM converged in fewer iterations ($\approx 23$) than unsupervised EM,
+        since the labeled data guide the parameter estimates from the start.
+        The unsupervised EM required more iterations to reach a stable log-likelihood ($\approx 100$).
+
+        \item 
+        The semi-supervised EM was more stable: cluster assignments remained consistent across random initializations (Fig. \ref{fig:semi_pred0}, \ref{fig:semi_pred1}, \ref{fig:semi_pred2}),
+        while the unsupervised EM swapped labels or converged to different local optima (Fig. \ref{fig:unsup_pred_s0}, \ref{fig:unsup_pred_s1}, \ref{fig:unsup_pred_s2}).
+
+        \item 
+        The semi-supervised EM achieved better clustering quality.
+        It correctly identified the three compact Gaussian components (red, blue, green) and the single high-variance one (yellow),
+        whereas the unsupervised EM sometimes merged small clusters or split the large one.
+        Overall, labeled data made the assignments more accurate and interpretable.
+    \end{enumerate}
 
 \end{answer}
