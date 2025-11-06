@@ -48,7 +48,7 @@ the latent variable is known and no \(Q_i\) is introduced.
 Maximize the ELBO w.r.t. $\theta$ for fixed $Q_i^{(t)}$:
 $$
 \theta^{(t+1)} := \arg\max_\theta 
-\left \{ \sum_{i=1}^n \mathrm{ELBO}(x^{(i)};Q_i^{(t)},\theta) + \alpha \sum_{i=1}^{\tilde{n}}\log p(\tilde{x}^{(i)}, \tilde{z}^{(i)}; \theta^{(t)}) \right \}
+\left \{ \sum_{i=1}^n \mathrm{ELBO}(x^{(i)};Q_i^{(t)},\theta) + \alpha \sum_{i=1}^{\tilde{n}}\log p(\tilde{x}^{(i)}, \tilde{z}^{(i)}; \theta) \right \}
 $$
 
 \subsubsection*{Monotonic convergence}

@@ -3,7 +3,7 @@
 Calculate soft guesses for latent variables \(z^{(i)}\) just for the unlabeled data points
 $$
 \begin{align}
-\omega^{(i)}_j &= p(z^{(i)}=j|x^{(i)};\phi_j, \mu_j, \Sigma_j) \\
+w^{(i)}_j &= p(z^{(i)}=j|x^{(i)};\phi_j, \mu_j, \Sigma_j) \\
     &= \frac{p(x^{(i)}|z^{(i)}=j;\phi_j, \mu_j, \Sigma_j)\,p(z^{(i)}=j;\phi_j, \mu_j, \Sigma_j)}{\sum_{l=1}^k p(x^{(i)}|z^{(i)}=l;\phi_j, \mu_j, \Sigma_j)\,p(z^{(i)}=l;\phi_j, \mu_j, \Sigma_j)} \\
     &= \frac{\phi_j\,\mathcal{N}(x^{(i)}\!\mid\mu_j,\Sigma_j)}{\sum_{\ell=1}^k \phi_\ell \,\mathcal{N}(x^{(i)}\!\mid\mu_\ell,\Sigma_\ell)}
 \end{align}
