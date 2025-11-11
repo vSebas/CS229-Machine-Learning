@@ -1,0 +1,18 @@
+\item \subquestionpoints{20}
+\textbf{Coding problem.}
+
+Follow the instructions in {\tt src/cartpole/cartpole.py} to implement the algorithm. Use a discount factor
+of $\gamma = 0.995$.  \textbf{In particular, implement the following functions:}
+
+\begin{enumerate}
+  \item \texttt{choose\_action(state, mdp\_data)}
+  \item \texttt{update\_mdp\_transition\_counts\_reward\_counts(mdp\_data, state, action, new\_state, reward)}
+  \item \texttt{update\_mdp\_transition\_probs\_reward(mdp\_data)}
+  \item \texttt{update\_mdp\_value(mdp\_data, tolerance, gamma)}
+\end{enumerate}
+
+Once you've finished implementing the above functions, run the experiment via {\tt python cartpole.py}.
+Plot a learning curve showing the number of time-steps for which the pole was balanced on each trial (the
+starter code already includes the code to plot). \textbf{Include this plot in your writeup.}
+
+\textbf{Note:} With a correct implementation, you should expect to see the log of steps to failure reach around 5-7 and be converging by the end of the experiment. The number of failures before convergence can vary depending on implementation details, but the algorithm should converge well before reaching the maximum of 500 failures.
