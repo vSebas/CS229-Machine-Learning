@@ -21,6 +21,9 @@ def softmax(x):
         A 2d numpy float array containing the softmax results of shape batch_size x number_of_classes
     """
     # *** START CODE HERE ***
+    shifted = x - np.max(x, axis=1, keepdims=True)
+    exps = np.exp(shifted)
+    return exps / np.sum(exps, axis=1, keepdims=True)
     # *** END CODE HERE ***
 
 def sigmoid(x):
@@ -34,6 +37,7 @@ def sigmoid(x):
         A numpy float array containing the sigmoid results
     """
     # *** START CODE HERE ***
+    return 1 / (1 + np.exp(-x))
     # *** END CODE HERE ***
 
 def get_initial_params(input_size, num_hidden, num_output):
@@ -63,6 +67,14 @@ def get_initial_params(input_size, num_hidden, num_output):
     """
 
     # *** START CODE HERE ***
+    W1 = np.random.randn(input_size, num_hidden)    # standard normal distribution (mean = 0, standard deviation = 1)
+    W2 = np.random.randn(num_hidden, num_output)    # standard normal distribution (mean = 0, standard deviation = 1)
+    params = {"W1":W1,
+              "b1":np.zeros(num_hidden),
+              "W2":W2,
+              "b2":np.zeros(num_output)}
+    
+    return params
     # *** END CODE HERE ***
 
 def forward_prop(data, one_hot_labels, params):
@@ -84,6 +96,26 @@ def forward_prop(data, one_hot_labels, params):
             3. The average loss for these data elements
     """
     # *** START CODE HERE ***
+    W1 = params["W1"]
+    W2 = params["W2"]
+    b1 = params["b1"]
+    b2 = params["b2"]
+
+    Z1 = data @ W1 + b1
+
+    A = sigmoid(Z1)
+
+    Z2 = A @ W2 + b2 # logits
+
+    P = softmax(Z2)
+
+    # Cross-entropy loss (average over batch)
+    B = data.shape[0]
+    # eps = 1e-12              # to avoid log(0)
+    # loss = -np.sum(one_hot_labels * np.log(P + eps)) / B
+    loss = -np.sum(one_hot_labels * np.log(P)) / B
+
+    return A,P,loss
     # *** END CODE HERE ***
 
 def backward_prop(data, one_hot_labels, params, forward_prop_func):
@@ -107,6 +139,38 @@ def backward_prop(data, one_hot_labels, params, forward_prop_func):
             W1, W2, b1, and b2
     """
     # *** START CODE HERE ***
+    H, P, loss = forward_prop_func(data, one_hot_labels, params)
+
+    W1 = params["W1"]
+    b1 = params["b1"]
+    W2 = params["W2"]
+    b2 = params["b2"]
+
+    B = data.shape[0]
+
+    # 1) Output layer error (dL/dZ2)
+    dZ2 = (P - one_hot_labels) / B       # (B, K)
+
+    # 2) Gradients for W2, b2
+    dW2 = H.T @ dZ2                      # (H, B) @ (B, K) -> (H, K)
+    db2 = np.sum(dZ2, axis=0)           # (K,)
+
+    # 3) Backprop into hidden layer
+    dH = dZ2 @ W2.T                     # (B, K) @ (K, H) -> (B, H)
+    dZ1 = dH * H * (1 - H)              # sigmoid derivative
+
+    # 4) Gradients for W1, b1
+    dW1 = data.T @ dZ1                  # (D, B) @ (B, H) -> (D, H)
+    db1 = np.sum(dZ1, axis=0)           # (H,)
+
+    gradients = {
+        "W1": dW1,
+        "b1": db1,
+        "W2": dW2,
+        "b2": db2
+    }
+    return gradients
+
     # *** END CODE HERE ***
 
 
@@ -132,6 +196,15 @@ def backward_prop_regularized(data, one_hot_labels, params, forward_prop_func, r
             W1, W2, b1, and b2
     """
     # *** START CODE HERE ***
+    # Unregularized gradients
+    gradients = backward_prop(data, one_hot_labels, params, forward_prop_func)
+
+    # Regularized gradients
+    gradients["W1"] += 2 * reg * params["W1"]
+    gradients["W2"] += 2 * reg * params["W2"]
+
+    return gradients
+
     # *** END CODE HERE ***
 
 def gradient_descent_epoch(train_data, one_hot_train_labels, learning_rate, batch_size, params, forward_prop_func, backward_prop_func):
@@ -154,6 +227,18 @@ def gradient_descent_epoch(train_data, one_hot_train_labels, learning_rate, batc
     """
 
     # *** START CODE HERE ***
+    N = train_data.shape[0]
+
+    for start in range(0, N, batch_size):
+        end = start + batch_size
+
+        gradients = backward_prop_func(train_data[start:end], one_hot_train_labels[start:end], params, forward_prop_func)
+
+        params["W1"] -= learning_rate * gradients["W1"]
+        params["W2"] -= learning_rate * gradients["W2"]
+        params["b1"] -= learning_rate * gradients["b1"]
+        params["b2"] -= learning_rate * gradients["b2"]
+
     # *** END CODE HERE ***
 
     # This function does not return anything

@@ -1,2 +1,45 @@
 \begin{answer}
+
+Let $f(a_f) = \max_a f(a)$, and $g(a_g) = \max_a g(a)$.
+
+Thus,
+\[
+\max_a f(a) - \max_a g(a) = f(a_f) - g(a_g)
+\]
+
+Since $f(a_f) \geq f(a_g)$,
+\[
+f(a_f) - g(a_g) \leq f(a_g) - g(a_g)
+\]
+
+
+
+
+\[
+\begin{align*}
+B(V_1) - B(V_2)
+&= R(s) + \gamma \max_{a\in A} \sum_{s'\in S} P_{sa}(s')V_1(s') - R(s) 
+ - \gamma \max_{a\in A} \sum_{s'\in S} P_{sa}(s')V_2(s') \\
+&=  \gamma \left[ \max_{a\in A} \sum_{s'\in S} P_{sa}(s') V_1(s') - \max_{a\in A} \sum_{s'\in S} P_{sa}(s')V_2(s') \right] \\
+\end{align*}
+\]
+
+\[
+f(a) = \sum_{s' \in S} P_{sa}(s')V_1(s'), \qquad f(a) = \sum_{s' \in S} P_{sa}(s')V_2(s')
+\]
+
+$V$ a vector of values for each state. I.e., if $V' = B(V)$, then
+\[
+V'(s) = R(s) + \gamma \max_{a\in A} \sum_{s'\in S} P_{sa}(s')
+V(s').
+\]
+
+\[
+   ||B(V_1) - B(V_2)||_\infty \leq \gamma ||V_1 - V_2||_\infty.
+\]
+where
+\[
+   ||V||_\infty = \max_{s \in S} |V(s)|.
+\]
+
 \end{answer}
