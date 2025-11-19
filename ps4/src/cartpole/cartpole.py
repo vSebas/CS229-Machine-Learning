@@ -129,8 +129,30 @@ def choose_action(state, mdp_data):
     """
 
     # *** START CODE HERE ***
+    # print(mdp_data["transition_counts"].shape)
+    # print(mdp_data["transition_probs"].shape)
+    # print(mdp_data["reward_counts"].shape)
+    # print(mdp_data["reward"].shape)
+    # print(mdp_data["value"].shape)
+    # print(mdp_data["num_states"].shape)
+    C_sa = mdp_data["transition_counts"][state]
+    P_sa = mdp_data["transition_probs"][state]
+    V = mdp_data["value"]
+    
+    if(np.max(C_sa) == 0.0):
+        a = np.random.randint(2)
+    else:
+        scores = np.dot(P_sa.T, V)
+
+        best_value = np.max(scores)
+        best_actions = np.flatnonzero(scores == best_value)
+        if best_actions.size > 1:
+            a = int(np.random.choice(best_actions))
+        else:
+            a = int(best_actions[0])
+
+    return a
     # *** END CODE HERE ***
-    return None
 
 
 def update_mdp_transition_counts_reward_counts(mdp_data, state, action, new_state, reward):
@@ -155,6 +177,11 @@ def update_mdp_transition_counts_reward_counts(mdp_data, state, action, new_stat
     """
 
     # *** START CODE HERE ***
+    mdp_data["transition_counts"][state, new_state, action] += 1
+
+    mdp_data["reward_counts"][new_state, 1] += 1
+    if reward == -1:
+        mdp_data["reward_counts"][new_state, 0] += 1
     # *** END CODE HERE ***
 
     # This function does not return anything
@@ -179,6 +206,22 @@ def update_mdp_transition_probs_reward(mdp_data):
     """
 
     # *** START CODE HERE ***
+    states, _, actions = mdp_data["transition_counts"].shape
+
+    for s in range(states):
+        for a in range(actions):
+            counts_sa = mdp_data["transition_counts"][s, :, a]
+            total = counts_sa.sum()
+
+            if(total):
+                mdp_data["transition_probs"][s,:,a] = counts_sa[:]/total
+        
+        fail_count = mdp_data["reward_counts"][s, 0]
+        visit_count = mdp_data["reward_counts"][s, 1]
+
+        if(visit_count > 0):
+            mdp_data["reward"][s] = -fail_count / visit_count
+
     # *** END CODE HERE ***
 
     # This function does not return anything
@@ -207,8 +250,29 @@ def update_mdp_value(mdp_data, tolerance, gamma):
     """
 
     # *** START CODE HERE ***
+    states, _, actions = mdp_data["transition_counts"].shape
+
+    P_sa = mdp_data["transition_probs"]
+    R_s = mdp_data["reward"]
+    V = mdp_data["value"]
+    
+    Q = np.zeros((states,actions))
+
+    for s in range(states):
+        for a in range(actions):
+            Q[s,a] = R_s[s] + gamma*np.dot(P_sa[s, :, a], V)
+
+
+    V_new = np.max(Q,axis=1)
+
+    # Convergence
+    delta = np.max(np.abs(V_new - V))
+
+    mdp_data["value"] = V_new
+
+    return delta < tolerance
+
     # *** END CODE HERE ***
-    return None
 
 
 def main(plot=True):

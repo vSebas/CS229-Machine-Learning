@@ -1,45 +1,68 @@
 \begin{answer}
 
-Let $f(a_f) = \max_a f(a)$, and $g(a_g) = \max_a g(a)$.
+\textbf{Proof of Inequality}
 
-Thus,
+Let $f(a_f) = \max_a f(a)$, and $g(a_g) = \max_a g(a)$. Then,
 \[
 \max_a f(a) - \max_a g(a) = f(a_f) - g(a_g)
 \]
 
-Since $f(a_f) \geq f(a_g)$,
+Since $f(a_f) \geq f(a_g)$, then
 \[
-f(a_f) - g(a_g) \leq f(a_g) - g(a_g)
+f(a_f) - g(a_g) \leq f(a_g) - g(a_g) \leq | f(a_g) - g(a_g) | \leq \max_a | f(a) - g(a) |
+\]
+Similarly, swapping $f$ and $g$ gives
+\[
+\max_a g(a) - \max_a f(a) \le \max_a |f(a) - g(a)|.
+\]
+Thus,
+\[
+-\max_a |f(a) - g(a)| 
+\le \max_a f(a) - \max_a g(a) 
+\le \max_a |f(a) - g(a)|,
+\]
+which implies
+\[
+\left|\max_a f(a) - \max_a g(a)\right| 
+\le \max_a |f(a) - g(a)|.
 \]
 
-
-
-
+\textbf{Proof.}
+\[
+\begin{aligned}
+B(V_1)(s) - B(V_2)(s) &= \gamma \left[ \max_{a\in A} \sum_{s'\in S} P_{sa}(s') V_1(s') - \max_{a\in A} \sum_{s'\in S} P_{sa}(s') V_2(s')\right] \\
+| B(V_1)(s) - B(V_2)(s) | &= \gamma \left| \max_{a\in A} \sum_{s'\in S} P_{sa}(s') V_1(s') - \max_{a\in A} \sum_{s'\in S} P_{sa}(s') V_2(s')\right|
+\end{aligned}
+\]
+Apply the hint inequality:
 \[
 \begin{align*}
-B(V_1) - B(V_2)
-&= R(s) + \gamma \max_{a\in A} \sum_{s'\in S} P_{sa}(s')V_1(s') - R(s) 
- - \gamma \max_{a\in A} \sum_{s'\in S} P_{sa}(s')V_2(s') \\
-&=  \gamma \left[ \max_{a\in A} \sum_{s'\in S} P_{sa}(s') V_1(s') - \max_{a\in A} \sum_{s'\in S} P_{sa}(s')V_2(s') \right] \\
+   |B(V_1)(s) - B(V_2)(s)| &\leq  \gamma \max_{a\in A} \left| \sum_{s'\in S} P_{sa}(s') V_1(s') - \sum_{s'\in S} P_{sa}(s') V_2(s')\right| \\
+   |B(V_1)(s) - B(V_2)(s)| &\leq  \gamma \max_{a\in A} \left| \sum_{s'\in S} P_{sa}(s') ( V_1(s') - V_2(s')) \right|\\
 \end{align*}
 \]
 
+Using triangle inequality $|a + b| \leq |a| + |b|$, and the fact that $P_{sa}(s')$ is nonnegative:
 \[
-f(a) = \sum_{s' \in S} P_{sa}(s')V_1(s'), \qquad f(a) = \sum_{s' \in S} P_{sa}(s')V_2(s')
+\left| \sum_{s'\in S} P_{sa}(s') (V_1(s') - V_2(s')) \right| \leq \sum_{s'\in S} P_{sa}(s') |  V_1(s') - V_2(s') |
 \]
 
-$V$ a vector of values for each state. I.e., if $V' = B(V)$, then
+And bounding by max-norm, considering $\sum_{s'\in S} P_{sa}(s') =1$:
 \[
-V'(s) = R(s) + \gamma \max_{a\in A} \sum_{s'\in S} P_{sa}(s')
-V(s').
+\sum_{s'\in S} P_{sa}(s') |  V_1(s') - V_2(s') | \leq \sum_{s'\in S} P_{sa}(s') \| V_1 - V_2 \|_\infty = \| V_1 - V_2 \|_\infty
+\]
+So,
+\[
+|B(V_1)(s) - B(V_2)(s)| \leq \gamma \| V_1 - V_2 \|_\infty.
 \]
 
+Bounding left side of inequality by max-norm (max over all states):
+
 \[
-   ||B(V_1) - B(V_2)||_\infty \leq \gamma ||V_1 - V_2||_\infty.
+\boxed{
+\|B(V_1) - B(V_2)\|_\infty \leq \gamma \| V_1 - V_2 \|_\infty
+}
 \]
-where
-\[
-   ||V||_\infty = \max_{s \in S} |V(s)|.
-\]
+
 
 \end{answer}
