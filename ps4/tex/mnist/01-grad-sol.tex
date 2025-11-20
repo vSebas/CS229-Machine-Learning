@@ -1,4 +1,38 @@
 \begin{answer}
+
+We start with the definition of the cross-entropy loss:
+$$
+\begin{align*}
+\ell_{\text{CE}}(t,y)
+    &= -\log\left( \frac{\exp(t_{y})}{\sum_{s=1}^{k}\exp(t_{s})} \right) \\
+    &= -\log(\exp(t_{y})) + \log\left( \sum_{s=1}^{k}\exp(t_{s}) \right) \\
+    &= -t_{y} + \log\left( \sum_{s=1}^{k}\exp(t_{s}) \right)
+\end{align*}
+$$
+
+Take derivatives w.r.t. the $i$-th coordinate of $t$:
+
+$$
+\begin{align*}
+\frac{d}{dt_{i}}(-t_{y})
+    &= -\mathbbm{1}\{i=y\}
+    = -(e_{y})_{i} 
+    & \text{(one-hot vector)} \\
+\frac{d}{dt_{i}} \log\left( \sum_{s=1}^{k}\exp(t_{s}) \right)
+    &= \frac{\exp(t_{i})}{\sum_{s=1}^{k}\exp(t_{s})} 
+    & \text{(only $\exp(t_i)$ depends on $t_i$)} \\
+\frac{d}{dt_{i}} \ell_{\text{CE}}(t,y)
+    &= -(e_{y})_{i} + \frac{\exp(t_{i})}{\sum_{s=1}^{k}\exp(t_{s})} \\
+    &= p_{i} - (e_{y})_{i}
+\end{align*}
+$$
+
+For all coordinates:    
+$$
+\boxed{
+\nabla_{t}\ell_{\text{CE}}(t,y) = p - e_{y}
+}
+$$
+
+
 \end{answer}
-   
-  

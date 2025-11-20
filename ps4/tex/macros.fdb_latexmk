@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1763506281 "/home/saveasmtz/Documents/CS229/ps4/tex/macros.tex" "/home/saveasmtz/Documents/CS229/ps4/tex/macros.pdf" "macros" 1763506281
+["pdflatex"] 1763607885 "/home/saveasmtz/Documents/CS229/ps4/tex/macros.tex" "/home/saveasmtz/Documents/CS229/ps4/tex/macros.pdf" "macros" 1763607885
   "/etc/texmf/web2c/texmf.cnf" 1761186848 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/saveasmtz/Documents/CS229/ps4/tex/macros.aux" 0 -1 0 ""
   "/home/saveasmtz/Documents/CS229/ps4/tex/macros.tex" 1763502453 3422 680d92dd67782dc93102eb74302ef6e2 ""
@@ -146,6 +146,6 @@
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1761188658 8258470 3475d2f826222ee843ccdfff3ded5b90 ""
   "macros.tex" 1763502453 3422 680d92dd67782dc93102eb74302ef6e2 ""
   (generated)
-  "/home/saveasmtz/Documents/CS229/ps4/tex/macros.pdf"
   "macros.log"
+  "/home/saveasmtz/Documents/CS229/ps4/tex/macros.pdf"
   "/home/saveasmtz/Documents/CS229/ps4/tex/macros.log"

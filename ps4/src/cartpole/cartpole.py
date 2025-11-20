@@ -277,7 +277,7 @@ def update_mdp_value(mdp_data, tolerance, gamma):
 
 def main(plot=True):
     # Seed the randomness of the simulation so this outputs the same thing each time
-    np.random.seed(0)
+    np.random.seed(3)
 
     # Simulation parameters
     pause_time = 0.0001

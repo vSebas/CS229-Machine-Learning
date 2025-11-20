@@ -1,4 +1,61 @@
 \begin{answer}
+
+First, notice
+$$
+\|x-v\|^{2}_{2} = (x-v)^{\top}(x-v)=x^{\top}x-x^{\top}v-v^{\top}x+v^{\top}v
+$$
+Since $x^{\top}v$ and $v^{\top}x$ are scalars, $v=\alpha u$, and $u^{\top}u=1$:
+$$
+\|x-v\|^{2}_{2} = x^{\top}x-2x^{\top}v+v^{\top}v=x^{\top}x-2\alpha x^{\top}u+\alpha^{2}u^{\top}u=x^{\top}x-2\alpha x^{\top}u+\alpha^{2}
+$$
+
+To obtain min, differentiate $\|x-v\|^{2}_{2}$ w.r.t. $\alpha$ and set to zero
+$$
+\frac{d}{d \alpha}\|x-v\|^{2}_{2}=-2x^{\top}u+2\alpha
+$$
+$$
+-2x^{\top}u+2\alpha=0 \implies \alpha=x^{\top}u
+$$
+Thus, the projection of $x$ onto direction $u$ is:
+$$
+f_{u}(x^{(i)})=(u^{\top}x^{(i)})u
+$$
+From $\arg \min_{u:u^Tu=1} \sum_{i=1}^n \|x^{(i)}-f_u(x^{(i)})\|_2^2$
+$$
+\begin{align*}
+\sum_{i=1}^n \|x^{(i)}-f_u(x^{(i)})\|_2^2
+&= \sum_{i=1}^n \|x^{(i)}-(u^{\top}x^{(i)})u\|_2^2 = \sum_{i=1}^n \|x^{(i)}\|^{2}-(u^{\top}x^{(i)})^{2} \\
+&= \sum_{i=1}^n \|x^{(i)}\|^{2} -\sum_{i=1}^n(u^{\top}x^{(i)})^{2}
+\end{align*}
+$$
+$\sum_{i=1}^n \|x^{(i)}\|^{2}$ is a constant and doesn't impact minimization, so
+$$
+\arg \min_{u:u^Tu=1} -\sum_{i=1}^n(u^{\top}x^{(i)})^{2} = \arg \max_{u:u^Tu=1} \sum_{i=1}^n(u^{\top}x^{(i)})^{2}
+$$
+Notice
+$$
+(u^{\top}x^{(i)})^{2} 
+= (u^{\top}x^{(i)})(x^{(i)\top}u)
+= u^{\top}x^{(i)}x^{(i)\top}u
+= u^{\top}(x^{(i)}x^{(i)\top})u.
+$$
+$$
+\begin{align*}
+\arg \max_{u:u^Tu=1} \sum_{i=1}^n(u^{\top}x^{(i)})^{2} &= \arg \max_{u:u^Tu=1} \sum_{i=1}^n u^{\top}(x^{(i)}x^{(i)\top})u \\
+&= \arg \max_{u:u^Tu=1} u^{\top}\left (\sum_{i=1}^nx^{(i)}x^{(i)\top} \right )u
+\end{align*}
+$$
+Finally,
+$$
+\boxed{
+\begin{align*}
+\arg \min_{u:u^Tu=1} \sum_{i=1}^n \|x^{(i)}-f_u(x^{(i)})\|_2^2
+&=  \arg \max_{u:u^Tu=1} u^{\top}\left (\sum_{i=1}^nx^{(i)}x^{(i)\top} \right )u
+\end{align*}
+}
+$$
+
+
 \end{answer}
 
 
