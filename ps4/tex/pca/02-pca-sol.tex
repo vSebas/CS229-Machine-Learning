@@ -1,2 +1,43 @@
 \begin{answer}
+
+\begin{enumerate}
+    \item
+    \textbf{Square}
+    
+    If $M \in \mathbb{R}^{p \times q}$, then $M^{\top} \in \mathbb{R}^{q \times p}$, so
+    $$M^T M \in \mathbb{R}^{q \times q}$$
+    \textbf{Real}
+
+    $M \in \mathbb{R}^{p \times q}$, so entries of $M$ remain real
+
+    \textbf{Symmetric}
+    
+    $$(M^T M)^T = M^T (M^T)^T = M^T M$$
+    \textbf{Eigenvalue decomposition}
+    
+    Since $M^TM$ is real, symmetric, and square:
+    $$M^T M = Q \Lambda Q^T$$
+
+    \item
+
+    \[
+    M^T M = (U \Sigma V^T)^T (U \Sigma V^T)
+    = V \Sigma^T U^T U \Sigma V^T.
+    \]
+
+    Since \(U^T U = I\):
+
+    \[
+    \boxed{M^T M = V (\Sigma^T \Sigma) V^T}.
+    \]
+    \item
+
+    Expression in (ii) is the eigenvalue decomposition of \(M^T M\). So, the eigenvectors of \(M^T M\) are the columns of \(V\), and the eigenvalues of \(M^T M\) are the squared singular values of \(M\):
+
+    \[
+    \lambda_i = \sigma_i^2 \implies \boxed{\sigma_i = \sqrt{\lambda_i}}
+    \]
+
+\end{enumerate}
+
 \end{answer}

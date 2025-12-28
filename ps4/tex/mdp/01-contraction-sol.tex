@@ -44,12 +44,12 @@ Apply the hint inequality:
 
 Using triangle inequality $|a + b| \leq |a| + |b|$, and the fact that $P_{sa}(s')$ is nonnegative:
 \[
-\left| \sum_{s'\in S} P_{sa}(s') (V_1(s') - V_2(s')) \right| \leq \sum_{s'\in S} P_{sa}(s') |  V_1(s') - V_2(s') |
+\gamma \max_{a\in A} \left| \sum_{s'\in S} P_{sa}(s') (V_1(s') - V_2(s')) \right| \leq \gamma \max_{a\in A} \sum_{s'\in S} P_{sa}(s') |  V_1(s') - V_2(s') |
 \]
 
 And bounding by max-norm, considering $\sum_{s'\in S} P_{sa}(s') =1$:
 \[
-\sum_{s'\in S} P_{sa}(s') |  V_1(s') - V_2(s') | \leq \sum_{s'\in S} P_{sa}(s') \| V_1 - V_2 \|_\infty = \| V_1 - V_2 \|_\infty
+\gamma \max_{a\in A} \sum_{s'\in S} P_{sa}(s') |  V_1(s') - V_2(s') | \leq \gamma \sum_{s'\in S} P_{sa}(s') \| V_1 - V_2 \|_\infty = \gamma \| V_1 - V_2 \|_\infty
 \]
 So,
 \[

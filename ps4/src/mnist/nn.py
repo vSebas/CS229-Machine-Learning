@@ -111,8 +111,6 @@ def forward_prop(data, one_hot_labels, params):
 
     # Cross-entropy loss (average over batch)
     B = data.shape[0]
-    # eps = 1e-12              # to avoid log(0)
-    # loss = -np.sum(one_hot_labels * np.log(P + eps)) / B
     loss = -np.sum(one_hot_labels * np.log(P)) / B
 
     return A,P,loss
@@ -148,20 +146,16 @@ def backward_prop(data, one_hot_labels, params, forward_prop_func):
 
     B = data.shape[0]
 
-    # 1) Output layer error (dL/dZ2)
-    dZ2 = (P - one_hot_labels) / B       # (B, K)
+    dZ2 = (P - one_hot_labels) / B
 
-    # 2) Gradients for W2, b2
-    dW2 = H.T @ dZ2                      # (H, B) @ (B, K) -> (H, K)
-    db2 = np.sum(dZ2, axis=0)           # (K,)
+    dW2 = H.T @ dZ2
+    db2 = np.sum(dZ2, axis=0)
 
-    # 3) Backprop into hidden layer
-    dH = dZ2 @ W2.T                     # (B, K) @ (K, H) -> (B, H)
-    dZ1 = dH * H * (1 - H)              # sigmoid derivative
+    dH = dZ2 @ W2.T
+    dZ1 = dH * H * (1 - H)
 
-    # 4) Gradients for W1, b1
-    dW1 = data.T @ dZ1                  # (D, B) @ (B, H) -> (D, H)
-    db1 = np.sum(dZ1, axis=0)           # (H,)
+    dW1 = data.T @ dZ1
+    db1 = np.sum(dZ1, axis=0)
 
     gradients = {
         "W1": dW1,
